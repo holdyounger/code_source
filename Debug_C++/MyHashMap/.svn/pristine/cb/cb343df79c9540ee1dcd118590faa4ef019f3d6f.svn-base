@@ -1,0 +1,64 @@
+/********************************************************************************
+ *
+ *        Copyright (C) 2021  Beijing winicssec Technology
+ *        All rights reserved
+ *
+ *        filename :      myhashmap.CPP
+ *        description :    哈希表
+ *
+ *        created by  mingming.shi on Jul. 13th, 2021
+ *
+ ********************************************************************************/
+#include <iostream>
+#include "myhashmap.h"
+
+void myHashMap::put(int key,string value)
+{
+	int tk = hash(key);
+	Node *h = arr[tk];
+	Node *prev;
+	while (h)
+	{
+		if (h->nkey == key) // 1. 如果找到了key，就说明已经保存过一次了，只需更新即可
+		{
+			h->nval = value;
+			return;
+		}
+		// 2. 如果没有找到，则需要插入到链表中,用prev指向尾节点
+		prev = h;
+		h = h->next; 
+	}
+	// 3 保存到prev下一节点
+	Node* node = new Node(key,value);
+	prev->next = node;
+}
+
+void myHashMap::get(int key)
+{
+	int tk = hash(key);
+	Node *h = arr[tk];
+	while(h)
+	{
+		if (h->nkey == key)
+		{
+			return h->nval;
+		}
+		h = h->next;
+	}
+	return -1;
+}
+
+void myHashMap::remove(int key)
+{
+	int tk = hash(key);
+	Node* h = arr[tk];
+	while (h)
+	{
+		if (h->nkey == key)
+		{
+			h->nval = " ";
+		}
+		
+	}
+	
+}

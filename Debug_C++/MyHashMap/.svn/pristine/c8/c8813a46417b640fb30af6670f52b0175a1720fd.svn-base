@@ -1,0 +1,64 @@
+#include "myhashmap.h"
+
+void optMyHashMap(MyHashMap *hashmap);
+
+
+
+void main(int argc, const char* argv[])
+{
+	MyHashMap* hashmap = new MyHashMap;
+	optMyHashMap(hashmap);
+}
+
+/*
+* @fn           operat
+* @brief        实现对hashmap具体操作的函数
+* @param[in]    hashmap: 需要被操作的hashmap
+* @param[out]   
+* @return       
+*               
+* @detail      
+* @author       mingming.shi
+* @date         2021-7-21
+*/
+void optMyHashMap(MyHashMap *hashmap)
+{
+optInit:
+	cout << "请输入需要进行的操作：\n1.添加\t2.查询\t3.删除\t4.退出\n";
+	int operatType;
+	int key;
+	cin >> operatType;
+	switch(operatType)
+	{
+		case 1:
+			{
+				cout << "请输入需要插入的键值对（用空格分开）：\n";
+				string value;
+				cin >> key >> value;
+				hashmap->put(key,value);
+				goto optInit;
+			}
+		case 2:
+			{
+				cout << "请输入需要查询的键：\n";
+				cin >> key;
+				string ret = hashmap->get(key);
+				cout << "键'"<< key << "'对应的值为：" << ret << endl;
+				goto optInit;
+			}
+		case 3:
+			{
+				cout << "请输入需要删除的键：\n";
+				cin >> key;
+				hashmap->remove(key);
+				goto optInit;
+			}
+		case 4:
+			return;
+		default:
+			{
+				goto optInit;
+			}
+	}
+
+}

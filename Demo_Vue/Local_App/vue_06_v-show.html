@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        img{
+            zoom: 50%;
+        }
+    </style>
+    <meta charset="utf-8">
+    <title>Vue_01_Demo</title>
+    <script src="https://static.runoob.com/assets/vue/1.0.11/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="changeIsShow">图片显示开关</button>
+        <button @click="addArg">累加Arg {{ isShowArg }}</button>
+        <br>
+        <img src="../img/1.jpg" v-show="isShow" alt="v-show test">
+        <img src="../img/2.jpg" v-show="isShowArg>=10" alt="v-show test">
+    </div>
+    <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!',
+                isShow: false,
+                isShowArg: 1
+            },
+            methods: {
+                changeIsShow:function(){
+                    this.isShow = !this.isShow;
+                },
+                addArg:function(){
+                    this.isShowArg++;
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

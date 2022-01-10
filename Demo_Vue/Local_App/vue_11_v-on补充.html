@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+
+    </style>
+    <meta charset="utf-8">
+    <title>Vue_01_Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="打印输入内容" @click="print('hello')">
+        <input type="text" v-model="inputValue" @keyup.enter="msgBox">
+        <p v-for="it in showValue">{{ it.name }}</p>
+    </div>
+    <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!',
+                inputValue:'',
+                showValue:[]
+            },
+            methods:{
+                print:function(str){
+                    this.showValue.push({name:this.inputValue})
+                },
+                msgBox:function(){
+                    alert("ok");
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

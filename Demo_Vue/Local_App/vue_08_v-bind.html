@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .active {
+            border: 1px solid red;
+        }
+        img{
+            zoom: 10%;
+        }
+    </style>
+    <meta charset="utf-8">
+    <title>Vue_01_Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input value="切换" type="button" @click="toggleActive">
+        <img :src="imgSrc" :class="isActive?'active':''"/>
+        <img :src="imgSrc" :class="{active:isActive}"/>
+    </div>
+    
+    <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!',
+                imgSrc: "../img/4.jpg",
+                imgTitle: "",
+                isActive: false
+            },
+            methods:{
+                toggleActive:function(){
+                    this.isActive = !this.isActive;
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

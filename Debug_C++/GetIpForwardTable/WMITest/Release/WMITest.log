@@ -1,0 +1,18 @@
+﻿  WMITest.cpp
+g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(179): warning C4477: “printf”: 格式字符串“%lu”需要类型“unsigned long”的参数，但可变参数 1 拥有了类型“UINT64”
+  g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(179): note: 请考虑在格式字符串中使用“%llu”
+  g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(179): note: 请考虑在格式字符串中使用“%I64u”
+g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(180): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“UINT64”
+  g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(180): note: 请考虑在格式字符串中使用“%lld”
+  g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(180): note: 请考虑在格式字符串中使用“%I64d”
+g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(181): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“UINT64”
+  g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(181): note: 请考虑在格式字符串中使用“%lld”
+  g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(181): note: 请考虑在格式字符串中使用“%I64d”
+g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(182): warning C4477: “printf”: 格式字符串“%f”需要类型“double”的参数，但可变参数 1 拥有了类型“UINT64”
+g:\debug_c++\getipforwardtable\wmitest\wmitest.cpp(163): warning C4101: “vtProp1”: 未引用的局部变量
+  正在生成代码
+  1 of 67 functions ( 1.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  WMITest.vcxproj -> G:\Debug_C++\GetIpForwardTable\Release\WMITest.exe

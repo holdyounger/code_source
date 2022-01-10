@@ -1,0 +1,15 @@
+﻿  ASMCodeInject_1.cpp
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(86): warning C4018: “<”: 有符号/无符号不匹配
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(212): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(226): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(228): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(243): warning C4018: “<”: 有符号/无符号不匹配
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(246): warning C4305: “=”: 从“int”到“BYTE”截断
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(246): warning C4309: “=”: 截断常量值
+g:\debug_c++\getipforwardtable\asmcodeinject\asmcodeinject_1.cpp(283): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“HANDLE”
+  正在生成代码
+  1 of 222 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  ASMCodeInject.vcxproj -> G:\Debug_C++\GetIpForwardTable\Release\ASMCodeInject.exe

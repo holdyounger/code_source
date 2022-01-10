@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+
+    </style>
+    <meta charset="utf-8">
+    <title>Vue_01_Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<style>
+    #todoapp {
+        display: grid;
+        border: none;
+        width: 100%;
+        height: 100%;
+        align-self: center;
+        text-align: center;
+        max-width: 550px;
+        min-width: 230px;
+        line-height: 1.4em;
+        margin: 0 auto;
+        font-weight: 300;
+        filter: drop-shadow(1px 1px 5px rgb(2, 1, 2));
+        border-radius: 25px;
+        transform: scale3d(1, 1, 1);
+        transition: cubic-bezier(0.215, 0.610, 0.355, 1);
+        background-color: white;
+    }
+
+    #footer {
+        color: rgb(138, 133, 133);
+        border: 1px rgb(182, 180, 180) solid;
+        display: inline-block;
+        padding: 10px 15px;
+        border-bottom: none;
+        border-radius: inherit;
+    }
+
+    #main {
+        height: 30%;
+        width: 80%;
+    }
+
+    #todo-list {
+        width: 100%;
+    }
+
+    #todo {
+        list-style-type: none;
+        font: '微软雅黑';
+        font-size: 15px;
+        padding: 10px;
+        border: 1px rgb(194, 192, 192) solid;
+        text-align: center;
+        width: 100%;
+    }
+
+    .new-todo {
+        width: 90%;
+        font-size: 15px;
+        padding: 10px;
+        border: none;
+        border-top: 1px rgb(194, 192, 192) solid;
+        border-bottom: 1px rgb(194, 192, 192) solid;
+        ;
+        height: 30%;
+        display: flexbox;
+        filter: opacity(1);
+        background-color: transparent !important;
+        margin: 40px 10px;
+        transition: 2s ease-in-out;
+        border-radius: 25px;
+    }
+
+    .new-todo:focus {
+        /* border-top: none;  */
+        border: 1px rgb(194, 192, 192) solid;
+        border-image: linear-gradient(to right, #8f41e9, #578aef) 1 10;
+        animation: movelinear 20s infinite;
+        border-radius: 25px;
+    }
+
+    @keyframes movelinear {
+        100% {
+            border-image: linear-gradient(to right, #03a9f4, #f441a5, #ffeb3b, #09a8f4) -1 -10;
+        }
+    }
+
+    .new-todo:focus {
+        outline: none;
+    }
+
+    #view {}
+
+    #index {
+        text-align: left;
+        float: left;
+    }
+
+    #destroy {
+        float: right;
+        height: 10%;
+        width: 9%;
+        filter: opacity(0);
+        border: none;
+        background-color: none;
+    }
+
+    li:hover #destroy {
+        filter: opacity(1);
+        background-color: none;
+        color: black;
+        font-size: 15px;
+    }
+
+    li:hover {
+        color: white;
+        background-color: rgb(46, 115, 243);
+    }
+
+    #info {
+        bottom: -850px;
+        text-align: center !important;
+    }
+
+    button {
+        background-color: transparent;
+        width: 10%;
+        height: 100%;
+        border: none;
+    }
+
+    button:hover {
+        background-color: rgb(46, 115, 243);
+        color: white;
+        border-radius: 25px;
+        filter: drop-shadow(1px 2px 5px rgb(229, 221, 230));
+        transform: scale(1.5, 1.5);
+        font-size: 15px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    img.demo-img {
+        animation: screenPerspective 1s linear calc(.0404598*-21s) forwards paused;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        height: auto;
+        line-height: 24px;
+        opacity: 1;
+        text-align: center;
+        transform-style: preserve-3d;
+        transition: all 200ms;
+        width: 100%;
+        will-change: transform, opacity;
+    }
+
+    @keyframes screenPerspective {
+        0% {
+            opacity: .72;
+            transform: translate3d(0, -8vh, 0) scale3d(.85, .85, 1) rotateX(-40deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+        }
+    }
+
+    @media screen and (max-width: 1023px) {
+        img.demo-img {
+            height: .9rem;
+        }
+    }
+
+    /* ❤ */
+    section.animations {
+        animation: growUp 1s linear calc(-.286459s) forwards paused;
+        background-image: linear-gradient(114.9deg, #222222 8.3%, #00283C 41.6%, #008FD5 93.4%);
+        border-radius: 1.25em;
+        color: #FFFFFF;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        line-height: 24px;
+        margin: 10% 0 7em;
+        overflow: hidden;
+        padding: 4.5rem 4.5rem 7rem;
+        position: relative;
+        transform-style: preserve-3d;
+        will-change: transform, opacity;
+    }
+
+    @keyframes growUp {
+
+        0%,
+        14% {
+            opacity: .3;
+            transform: translate3d(0, 0, 0) scale3d(.88, .88, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+        }
+
+        17.5% {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+        }
+    }
+
+    @media screen and (min-width: 1150px) {
+        @keyframes growUp {
+
+            0%,
+            23% {
+                opacity: .3;
+                transform: translate3d(0, 0, 0) scale3d(.88, .88, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+            }
+
+
+            30% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+            }
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        section.animations {
+            box-sizing: border-box;
+            margin-bottom: 7%;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 4rem 2.5rem;
+        }
+    }
+
+    div.row.relative {
+        align-items: center;
+        color: #FFFFFF;
+        display: flex;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        line-height: 24px;
+        position: relative;
+    }
+
+    @media screen and (max-width: 1023px) {
+        div.row.relative {
+            flex-direction: column;
+        }
+    }
+
+    @media screen and (min-width: 1024px) and (max-width: 1150px) {
+        div.row.relative {
+            flex-direction: row;
+        }
+    }
+
+    div.row.relative div {
+        color: #FFFFFF;
+        flex: 1 1 0;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        line-height: 24px;
+    }
+
+    @media screen and (max-width: 1024px) {
+        div.row.relative div {
+            margin-top: 0;
+        }
+    }
+
+    @media screen and (min-width: 1024px) and (max-width: 1150px) {
+        div.row.relative div {
+            margin-top: 0;
+        }
+    }
+
+    div.row.relative div:first-child {
+        margin-right: 3rem;
+    }
+
+    @media screen and (max-width: 1023px) {
+        div.row.relative div:first-child:not(.mini-section) {
+            margin-right: 0;
+        }
+    }
+
+    h2.reveal {
+        color: #FFFFFF;
+        font-family: CerebriSans-Bold, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 42px;
+        font-weight: 400;
+        letter-spacing: -1px;
+        line-height: 1.2;
+        visibility: visible;
+    }
+
+    @media screen and (max-width: 1024px) {
+        h2.reveal {
+            font-size: 26px;
+            margin-top: 0;
+        }
+    }
+
+    @media screen and (min-width: 1024px) and (max-width: 1150px) {
+        h2.reveal {
+            margin-top: 0;
+        }
+    }
+
+    p.animation-text.reveal {
+        color: #FFFFFF;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 20px;
+        line-height: 24px;
+        visibility: visible;
+    }
+
+    @media screen and (max-width: 1024px) {
+        p.animation-text.reveal {
+            font-size: 18px;
+        }
+    }
+
+    a.button.demo-button.reveal {
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.06) 0 1px 3px 0;
+        color: #FFFFFF;
+        cursor: pointer;
+        display: inline-block;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        font-weight: 400;
+        letter-spacing: -.02em;
+        line-height: 24px;
+        margin: 0 auto;
+        overflow-wrap: break-word;
+        padding: .84375rem 1.5rem .65625rem;
+        text-align: center;
+        text-decoration: none;
+        transition: transform 250ms, background-position 500ms;
+        visibility: visible;
+    }
+
+    @media screen and (max-width: 1024px) {
+        a.button.demo-button.reveal {
+            box-sizing: border-box;
+            display: none;
+            width: 100%;
+        }
+    }
+
+    a.button.demo-button.reveal:hover {
+        box-shadow: rgba(0, 0, 0, 0.06) 0 4px 12px;
+        transform: translateY(-1px);
+    }
+
+    a.button.demo-button.reveal:focus {
+        box-shadow: rgba(0, 0, 0, 0.06) 0 4px 12px;
+        transform: translateY(-1px);
+    }
+
+    svg.svg-inline--fa.fa-eye.fa-w-18 {
+        color: #FFFFFF;
+        cursor: pointer;
+        display: inline-block;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: inherit;
+        height: 1em;
+        letter-spacing: -.34px;
+        line-height: 24px;
+        margin-right: 5px;
+        overflow: visible;
+        pointer-events: none;
+        text-align: center;
+        vertical-align: -.125em;
+        width: 1.125em;
+    }
+
+    section.animations svg.svg-inline--fa.fa-eye.fa-w-18 path {
+        color: #FFFFFF;
+        cursor: pointer;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        letter-spacing: -.34px;
+        line-height: 24px;
+        pointer-events: none;
+        text-align: center;
+    }
+
+    div.animation-example {
+        color: #FFFFFF;
+        flex: 1 1 0;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        line-height: 24px;
+    }
+
+    @media screen and (max-width: 1024px) {
+        div.animation-example {
+            margin-top: 4em;
+        }
+    }
+
+    @media screen and (min-width: 1024px) and (max-width: 1150px) {
+        div.animation-example {
+            margin-top: 5em;
+        }
+    }
+
+    div.animation-wrapper.reveal {
+        color: #FFFFFF;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 17px;
+        line-height: 24px;
+        visibility: visible;
+    }
+
+    svg.animated-heart {
+        animation: pulse 700ms infinite;
+        color: inherit;
+        display: block;
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 80px;
+        height: 1em;
+        line-height: 24px;
+        margin: auto;
+        overflow: visible;
+        vertical-align: -.125em;
+        width: 1em;
+    }
+
+    @keyframes pulse {
+        50% {
+            filter: brightness(1.2);
+            transform: scale(1.2);
+        }
+    }
+
+    section.animations svg.animated-heart path {
+        color: #FFFFFF;
+        fill: url(https://cssscanpro.com/?ref=beautifulboxshadow-bottom#rg);
+        font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 80px;
+        line-height: 24px;
+        pointer-events: none;
+    }
+
+    svg.svg-inline--fa.fa-ruler-combined.fa-w-16 {
+        color: #CCCCCC;
+        display: inline-block;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: inherit;
+        height: 1em;
+        line-height: 24px;
+        overflow: visible;
+        text-align: left;
+        vertical-align: -.125em;
+        white-space: nowrap;
+        width: 1em;
+    }
+
+    section.animations svg.svg-inline--fa.fa-ruler-combined.fa-w-16 path {
+        color: #CCCCCC;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 13px;
+        line-height: 24px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    svg.svg-inline--fa.fa-font.fa-w-14 {
+        color: #CCCCCC;
+        display: inline-block;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: inherit;
+        height: 1em;
+        line-height: 24px;
+        overflow: visible;
+        text-align: left;
+        vertical-align: -.125em;
+        width: .875em;
+    }
+
+    section.animations svg.svg-inline--fa.fa-font.fa-w-14 path {
+        color: #CCCCCC;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 13px;
+        line-height: 24px;
+        text-align: left;
+    }
+
+    span.hljs-attribute {
+        background-color: initial;
+        background-image: none;
+        color: #48C5DE;
+        display: inline-block;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 24px;
+        min-width: auto;
+        opacity: 1;
+        outline: 0;
+        text-align: left;
+        text-shadow: none;
+        white-space: pre-line;
+        word-break: break-all;
+    }
+
+    span.hljs-number {
+        background-color: initial;
+        background-image: none;
+        color: #BD93F9;
+        display: inline-block;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 24px;
+        min-width: auto;
+        opacity: 1;
+        outline: 0;
+        text-align: left;
+        text-shadow: none;
+        white-space: pre-line;
+        word-break: break-all;
+    }
+
+    section.animations div.cssscan-example-css.reveal p {
+        color: #B1B1B1;
+        font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        font-size: 20px;
+        line-height: 24px;
+        text-align: left;
+    }
+
+    @media screen and (max-width: 1024px) {
+        section.animations div.cssscan-example-css.reveal p {
+            font-size: 18px;
+        }
+    }
+    svg.animated-heart {
+  animation: pulse 700ms infinite;
+  color: inherit;
+  display: block;
+  font-family: CerebriSans-Regular, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 80px;
+  height: 1em;
+  line-height: 24px;
+  margin: auto;
+  overflow: visible;
+  vertical-align: -.125em;
+  width: 1em;
+}
+
+@keyframes pulse {
+  50% {
+    filter: brightness(1.2);
+    transform: scale(1.2);
+  }
+}
+</style>
+
+<body>
+
+
+    <!-- 主题区域 -->
+    <section id="todoapp">
+        <header class="header">
+
+            <h1> 记事本 </h1>
+            <input v-model="inputValue" type="text" @keyup.enter="add" autofocus="none" placeholder="请输入任务"
+                class="new-todo" />
+        </header>
+        <!-- 列表区域 -->
+        <section id="main" v-if="list.length!=0">
+            <ul id="todo-list">
+                <li id="todo" v-for="(item,index) in list">
+                    <div id="view">
+                        <span id="index">{{ index+1}}</span>
+                        <label style="text-align: left;">{{ item }}</label>
+                        <button id="destroy" @click="remove(index)">×</button>
+                    </div>
+                </li>
+            </ul>
+        </section>
+        <!--统计和清空 -->
+        <footer id="footer" v-if="list.length!=0">
+            <label style="float: left;">{{ list.length }} items left</label>
+            <button style="float: right;" @click="clear">clear</button>
+        </footer>
+    </section>
+    <!-- 底部 -->
+    <br><br>
+    <footer id="info">CopyRight By mignming.shi</footer>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <img src="https://d33wubrfki0l68.cloudfront.net/d8e83acd56dea809c2ab728eb3603c4a405fcb5b/77286/img/cover2.png"
+        alt="Demo" class="demo-img cssscan-pro-current" contenteditable="true">
+
+    <svg
+        style="overflow: visible;color: inherit;width: 1em;height: 1em;vertical-align: -.125em;"
+        class="animated-heart" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="heart" role="img"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="true">
+        <path fill="currentColor"
+            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z">
+        </path>
+    </svg>
+    
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="animation-wrapper reveal" style="visibility: visible;">
+        
+    </div>
+
+
+    <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+    <script>
+        var app = new Vue({
+            el: '#todoapp',
+            data: {
+                list: ["牺牲你宝贵的时间去干了更宝贵的事情吗？", "保持思考"],
+                inputValue: ""
+            },
+            methods: {
+                add: function () {
+                    if (this.inputValue.length != 0) {
+                        this.list.push(this.inputValue);
+                        this.inputValue = "";
+                    }
+                },
+                remove: function (x) {
+                    console.log(x);
+                    this.list.splice(x, 1);
+                },
+                clear: function () {
+                    this.list = [];
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>
