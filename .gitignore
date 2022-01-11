@@ -73,4 +73,9 @@ Thumbs.db
 # 用户文件
 #
 *.pro.user
-
+*.VC.db
+*.VC.opendb
+*.VC.db-shm
+*.VC.db-wal
+*/*/x64/*
+*/*/.vs
