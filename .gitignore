@@ -74,16 +74,19 @@ Thumbs.db
 #
 *.pro.user
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.VC.db
 =======
 >>>>>>> 6b95518 (:fire:(vs2017):工程文件)
+=======
+>>>>>>> 714d37b (:see_no_evil:(ignoreDoc):update)
 *.VC.opendb
 *.VC.db-shm
 *.VC.db-wal
 */*/x64/*
-<<<<<<< HEAD
-*/*/.vs
-=======
 */*/.vs
 *.VC.db
+<<<<<<< HEAD
 >>>>>>> 6b95518 (:fire:(vs2017):工程文件)
+=======
+>>>>>>> 714d37b (:see_no_evil:(ignoreDoc):update)
