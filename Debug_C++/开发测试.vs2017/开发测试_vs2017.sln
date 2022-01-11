@@ -70,10 +70,15 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CharacterTransferNumber", "CharacterTransferNumber\CharacterTransferNumber.vcxproj", "{19FF4842-0844-498C-A7E5-DB1C8283D1F4}"
 EndProject
 <<<<<<< HEAD
+<<<<<<< HEAD
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetChildFiles", "GetChildFiles\GetChildFiles.vcxproj", "{302334EF-F6F2-458A-8755-A00A45436850}"
 EndProject
 =======
 >>>>>>> 4086cd5 (:fire:fix(C++): 修改C++工程结构)
+=======
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetChildFiles", "GetChildFiles\GetChildFiles.vcxproj", "{302334EF-F6F2-458A-8755-A00A45436850}"
+EndProject
+>>>>>>> b9a9f53 (:fire:(工程):工程提交)
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -433,6 +438,9 @@ Global
 		{19FF4842-0844-498C-A7E5-DB1C8283D1F4}.Release|x86.ActiveCfg = Release|Win32
 		{19FF4842-0844-498C-A7E5-DB1C8283D1F4}.Release|x86.Build.0 = Release|Win32
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b9a9f53 (:fire:(工程):工程提交)
 		{302334EF-F6F2-458A-8755-A00A45436850}.Debug|Win32.ActiveCfg = Debug|Win32
 		{302334EF-F6F2-458A-8755-A00A45436850}.Debug|Win32.Build.0 = Debug|Win32
 		{302334EF-F6F2-458A-8755-A00A45436850}.Debug|x64.ActiveCfg = Debug|x64
@@ -445,8 +453,11 @@ Global
 		{302334EF-F6F2-458A-8755-A00A45436850}.Release|x64.Build.0 = Release|x64
 		{302334EF-F6F2-458A-8755-A00A45436850}.Release|x86.ActiveCfg = Release|Win32
 		{302334EF-F6F2-458A-8755-A00A45436850}.Release|x86.Build.0 = Release|Win32
+<<<<<<< HEAD
 =======
 >>>>>>> 4086cd5 (:fire:fix(C++): 修改C++工程结构)
+=======
+>>>>>>> b9a9f53 (:fire:(工程):工程提交)
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -477,9 +488,13 @@ Global
 		{DA6B4571-27D7-420F-A3E6-8A56F4E026F5} = {C2CB26D9-428C-4050-A883-E02955B52481}
 		{19FF4842-0844-498C-A7E5-DB1C8283D1F4} = {12FFA287-2FD1-4989-92C5-F9A2828FB1BA}
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{302334EF-F6F2-458A-8755-A00A45436850} = {C2CB26D9-428C-4050-A883-E02955B52481}
 =======
 >>>>>>> 4086cd5 (:fire:fix(C++): 修改C++工程结构)
+=======
+		{302334EF-F6F2-458A-8755-A00A45436850} = {C2CB26D9-428C-4050-A883-E02955B52481}
+>>>>>>> b9a9f53 (:fire:(工程):工程提交)
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19EFB91A-2809-42AF-99A0-145934EC4744}
