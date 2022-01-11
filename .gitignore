@@ -73,9 +73,17 @@ Thumbs.db
 # 用户文件
 #
 *.pro.user
+<<<<<<< HEAD
 *.VC.db
+=======
+>>>>>>> 6b95518 (:fire:(vs2017):工程文件)
 *.VC.opendb
 *.VC.db-shm
 *.VC.db-wal
 */*/x64/*
+<<<<<<< HEAD
 */*/.vs
+=======
+*/*/.vs
+*.VC.db
+>>>>>>> 6b95518 (:fire:(vs2017):工程文件)
