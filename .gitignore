@@ -97,4 +97,15 @@ Thumbs.db
 >>>>>>> 714d37b (:see_no_evil:(ignoreDoc):update)
 =======
 */*/.vs
+<<<<<<< HEAD
 >>>>>>> b9a9f53 (:fire:(工程):工程提交)
+=======
+
+# vs工程文件
+Demo_C++/开发测试.vs2017/Debug/*.*
+Demo_C++/开发测试.vs2017/Debug/*
+Demo_C++/开发测试.vs2017/x64/*
+Demo_C++/开发测试.vs2017/x64/*.*
+
+Demo_C++/开发测试.vs2017/*/x64
+>>>>>>> ccbb730 (:see_no_evil:(ignoreDoc):完善Vs工程生成文档配置)
