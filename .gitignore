@@ -98,8 +98,13 @@ Thumbs.db
 =======
 */*/.vs
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> b9a9f53 (:fire:(工程):工程提交)
 =======
+=======
+*.log
+*.tlog
+>>>>>>> 22122ac (:tada:(ALL): 重新部署)
 
 # vs工程文件
 Demo_C++/开发测试.vs2017/Debug/*.*
@@ -115,7 +120,12 @@ Demo_C++/开发测试.vs2017/Release/*.*
 Demo_C++/开发测试.vs2017/Release/*
 Demo_C++/开发测试.vs2017/*/x64
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 8bd3aaf (:fire:feat(Relsease):删除生成文件)
 =======
 Demo_C++/开发测试.vs2017/*/Release
 >>>>>>> 8e7051f (:see_no_evil:(vs build):vs2017工程中间文件)
+=======
+Demo_C++/开发测试.vs2017/**/Release/*.*
+Demo_C++/开发测试.vs2017/**/Release/*.*
+>>>>>>> 22122ac (:tada:(ALL): 重新部署)

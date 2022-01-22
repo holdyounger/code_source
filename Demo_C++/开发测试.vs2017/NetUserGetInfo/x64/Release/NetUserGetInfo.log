@@ -1,7 +1,0 @@
-﻿  NetUserGetInfo.cpp
-g:\code_source\demo_c++\开发测试.vs2017\netusergetinfo\netusergetinfo.cpp(48): warning C4477: “wprintf”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“int”
-g:\code_source\demo_c++\开发测试.vs2017\netusergetinfo\netusergetinfo.cpp(48): warning C4313: “wprintf”: 格式字符串中的“%s”与“int”类型的参数 1 冲突
-  正在生成代码
-  All 8 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  已完成代码的生成
-  NetUserGetInfo.vcxproj -> G:\Code_Source\Demo_C++\开发测试.vs2017\x64\Release\NetUserGetInfo.exe
