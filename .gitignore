@@ -114,4 +114,8 @@ Demo_C++/开发测试.vs2017/*/x64
 Demo_C++/开发测试.vs2017/Release/*.*
 Demo_C++/开发测试.vs2017/Release/*
 Demo_C++/开发测试.vs2017/*/x64
+<<<<<<< HEAD
 >>>>>>> 8bd3aaf (:fire:feat(Relsease):删除生成文件)
+=======
+Demo_C++/开发测试.vs2017/*/Release
+>>>>>>> 8e7051f (:see_no_evil:(vs build):vs2017工程中间文件)
