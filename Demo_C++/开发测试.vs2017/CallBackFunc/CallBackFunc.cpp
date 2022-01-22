@@ -25,6 +25,10 @@ void registNumCallBack(CallBackFunc callback, void *contex)
 
 int main()
 {
+	char ch;
+	if (ch == '0') {
+		cout << "char 为空";
+	}
 	for (int i = 0; i < 10; i++)
 	{
 		if (i % 2) {
