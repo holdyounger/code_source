@@ -106,6 +106,12 @@ Demo_C++/开发测试.vs2017/Debug/*.*
 Demo_C++/开发测试.vs2017/Debug/*
 Demo_C++/开发测试.vs2017/x64/*
 Demo_C++/开发测试.vs2017/x64/*.*
+<<<<<<< HEAD
 
 Demo_C++/开发测试.vs2017/*/x64
 >>>>>>> ccbb730 (:see_no_evil:(ignoreDoc):完善Vs工程生成文档配置)
+=======
+Demo_C++/开发测试.vs2017/Release/*.*
+Demo_C++/开发测试.vs2017/Release/*
+Demo_C++/开发测试.vs2017/*/x64
+>>>>>>> 8bd3aaf (:fire:feat(Relsease):删除生成文件)
