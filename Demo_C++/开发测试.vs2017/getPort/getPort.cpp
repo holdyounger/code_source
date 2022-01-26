@@ -7,7 +7,9 @@
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <stdio.h>
+#include <algorithm>
 
+#include <set>
 #include <vector>
 
 #pragma comment(lib, "iphlpapi.lib")
@@ -26,7 +28,7 @@ int main()
 {
 
 	// Declare and initialize variables
-	PMIB_TCPTABLE pTcpTable;
+	PMIB_TCPTABLE2 pTcpTable;
 	DWORD dwSize = 0;
 	DWORD dwRetVal = 0;
 
@@ -37,19 +39,19 @@ int main()
 
 	int i;
 
-	pTcpTable = (MIB_TCPTABLE *)MALLOC(sizeof(MIB_TCPTABLE));
+	pTcpTable = (MIB_TCPTABLE2 *)MALLOC(sizeof(MIB_TCPTABLE2));
 	if (pTcpTable == NULL) {
 		printf("Error allocating memory\n");
 		return 1;
 	}
 
-	dwSize = sizeof(MIB_TCPTABLE);
+	dwSize = sizeof(MIB_TCPTABLE2);
 	// Make an initial call to GetTcpTable to
 	// get the necessary size into the dwSize variable
-	if ((dwRetVal = GetTcpTable(pTcpTable, &dwSize, TRUE)) ==
+	if ((dwRetVal = GetTcpTable2(pTcpTable, &dwSize, TRUE)) ==
 		ERROR_INSUFFICIENT_BUFFER) {
 		FREE(pTcpTable);
-		pTcpTable = (MIB_TCPTABLE *)MALLOC(dwSize);
+		pTcpTable = (MIB_TCPTABLE2 *)MALLOC(dwSize);
 		if (pTcpTable == NULL) {
 			printf("Error allocating memory\n");
 			return 1;
@@ -57,63 +59,67 @@ int main()
 	}
 	// Make a second call to GetTcpTable to get
 	// the actual data we require
-	if ((dwRetVal = GetTcpTable(pTcpTable, &dwSize, TRUE)) == NO_ERROR) {
+	if ((dwRetVal = GetTcpTable2(pTcpTable, &dwSize, TRUE)) == NO_ERROR) {
 		printf("\tNumber of entries: %d\n", (int)pTcpTable->dwNumEntries);
-		for (i = 0; i < (int)pTcpTable->dwNumEntries; i++) {
+		for (i = 0; i < (int)pTcpTable->dwNumEntries; i++) 
+		{
 			IpAddr.S_un.S_addr = (u_long)pTcpTable->table[i].dwLocalAddr;
 			strcpy_s(szLocalAddr, sizeof(szLocalAddr), inet_ntoa(IpAddr));
 			IpAddr.S_un.S_addr = (u_long)pTcpTable->table[i].dwRemoteAddr;
 			strcpy_s(szRemoteAddr, sizeof(szRemoteAddr), inet_ntoa(IpAddr));
 
-			printf("\n\tTCP[%d] State: %ld - ", i,
-				pTcpTable->table[i].dwState);
-			switch (pTcpTable->table[i].dwState) {
-			case MIB_TCP_STATE_CLOSED:
-				printf("CLOSED\n");
-				break;
-			case MIB_TCP_STATE_LISTEN:
-				printf("LISTEN\n");
-				break;
-			case MIB_TCP_STATE_SYN_SENT:
-				printf("SYN-SENT\n");
-				break;
-			case MIB_TCP_STATE_SYN_RCVD:
-				printf("SYN-RECEIVED\n");
-				break;
-			case MIB_TCP_STATE_ESTAB:
-				printf("ESTABLISHED\n");
-				break;
-			case MIB_TCP_STATE_FIN_WAIT1:
-				printf("FIN-WAIT-1\n");
-				break;
-			case MIB_TCP_STATE_FIN_WAIT2:
-				printf("FIN-WAIT-2 \n");
-				break;
-			case MIB_TCP_STATE_CLOSE_WAIT:
-				printf("CLOSE-WAIT\n");
-				break;
-			case MIB_TCP_STATE_CLOSING:
-				printf("CLOSING\n");
-				break;
-			case MIB_TCP_STATE_LAST_ACK:
-				printf("LAST-ACK\n");
-				break;
-			case MIB_TCP_STATE_TIME_WAIT:
-				printf("TIME-WAIT\n");
-				break;
-			case MIB_TCP_STATE_DELETE_TCB:
-				printf("DELETE-TCB\n");
-				break;
-			default:
-				printf("UNKNOWN dwState value\n");
-				break;
+			if(0)
+			{
+				printf("\n\tTCP[%d] State: %ld - ", i,
+					pTcpTable->table[i].dwState);
+				switch (pTcpTable->table[i].dwState) {
+				case MIB_TCP_STATE_CLOSED:
+					printf("CLOSED\n");
+					break;
+				case MIB_TCP_STATE_LISTEN:
+					printf("LISTEN\n");
+					break;
+				case MIB_TCP_STATE_SYN_SENT:
+					printf("SYN-SENT\n");
+					break;
+				case MIB_TCP_STATE_SYN_RCVD:
+					printf("SYN-RECEIVED\n");
+					break;
+				case MIB_TCP_STATE_ESTAB:
+					printf("ESTABLISHED\n");
+					break;
+				case MIB_TCP_STATE_FIN_WAIT1:
+					printf("FIN-WAIT-1\n");
+					break;
+				case MIB_TCP_STATE_FIN_WAIT2:
+					printf("FIN-WAIT-2 \n");
+					break;
+				case MIB_TCP_STATE_CLOSE_WAIT:
+					printf("CLOSE-WAIT\n");
+					break;
+				case MIB_TCP_STATE_CLOSING:
+					printf("CLOSING\n");
+					break;
+				case MIB_TCP_STATE_LAST_ACK:
+					printf("LAST-ACK\n");
+					break;
+				case MIB_TCP_STATE_TIME_WAIT:
+					printf("TIME-WAIT\n");
+					break;
+				case MIB_TCP_STATE_DELETE_TCB:
+					printf("DELETE-TCB\n");
+					break;
+				default:
+					printf("UNKNOWN dwState value\n");
+					break;
+				}
+				printf("\tTCP[%d] Local Addr: %s\n", i, szLocalAddr);
+				printf("\tTCP[%d] Local Port: %d \n", i,
+					ntohs((u_short)pTcpTable->table[i].dwLocalPort));
+				printf("\tTCP[%d] Remote Addr: %s\n", i, szRemoteAddr);
+				printf("\tTCP[%d] Remote Port: %d\n", i,
+					ntohs((u_short)pTcpTable->table[i].dwRemotePort));
 			}
-			printf("\tTCP[%d] Local Addr: %s\n", i, szLocalAddr);
-			printf("\tTCP[%d] Local Port: %d \n", i,
-				ntohs((u_short)pTcpTable->table[i].dwLocalPort));
-			printf("\tTCP[%d] Remote Addr: %s\n", i, szRemoteAddr);
-			printf("\tTCP[%d] Remote Port: %d\n", i,
-				ntohs((u_short)pTcpTable->table[i].dwRemotePort));
 
 			g_Ports.push_back(pTcpTable->table[i].dwLocalPort);
 		}
@@ -124,14 +130,22 @@ int main()
 		return 1;
 	}
 
+	std::sort(g_Ports.begin(), g_Ports.end());
+
 	if (pTcpTable != NULL) {
 		FREE(pTcpTable);
 		pTcpTable = NULL;
 	}
 
 	int ii = 0;
+	bool flag = false;
 	for (auto it : g_Ports)
 	{
+		if (it >= 49152 && flag == false)
+		{
+			flag = true;
+			cout << "\n------------" << endl;
+		}
 		cout << it << " ";
 		if (ii++ % 10 == 0)
 		{
