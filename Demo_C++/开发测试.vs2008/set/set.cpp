@@ -124,11 +124,22 @@ int main()
 	int num;
 	STU_PORT_POOL stuPort;
 
-	getFreeDynamicPortsNum(num);
-	cout << "num:" << num << endl;
-	getPort(stuPort);
+	if (NO_ERROR == WNT::getFreeDynamicPortsNum(num))
+	{
+		cout << "num:" << num << endl;
+	}
+	else
+	{
+		cout << "获取失败"<< endl;
+	}
+	
+	WNT::getPort(stuPort);
 	cout << "start port:" << stuPort.nStartPort << endl;
 	cout << "range:" << stuPort.nRange << endl;
+	cout << "Enable:" << stuPort.bEnabl << endl;
+
+	stuPort.bEnabl = false;
+	WNT::SetPortIsAvailable(stuPort);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

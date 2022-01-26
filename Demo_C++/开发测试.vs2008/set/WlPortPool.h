@@ -37,9 +37,21 @@ typedef struct _PORT_POOL {
 	UINT nRange;		// 端口范围
 	bool bEnabl;
 
+	_PORT_POOL(UINT nSta = 0, UINT nRan = 0, bool bEn = false):nStartPort(nSta),nRange(nRan),bEnabl(bEn){};
 	bool isContain(UINT uPORT)
 	{
-		if ( uPORT >= nStartPort && uPORT < (nStartPort + nRange) )
+		if ( uPORT >= nStartPort && uPORT <= (nStartPort + nRange) )
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	bool isLegal()
+	{
+		if( (this->nStartPort + this->nRange) <= DEFAULT_STOP_PORT &&
+			(this->nStartPort + this->nRange) >= DEFAULT_START_PORT
+			)
 		{
 			return true;
 		}
@@ -48,20 +60,20 @@ typedef struct _PORT_POOL {
 
 	bool operator<(const _PORT_POOL& b) const
 	{
-		return this->nStartPort == b.nStartPort ? this->nRange < b.nRange : this->nStartPort < b.nRange;
+		return this->nStartPort == b.nStartPort ? this->nRange <= b.nRange : this->nStartPort < b.nRange;
 	}
 }STU_PORT_POOL, *PSTU_PORT_POOL;
 
-
 /* 全局变量-端口数组 */
-extern std::set<STU_PORT_POOL> g_stuPortPool;
+extern std::vector<STU_PORT_POOL> g_stuPortPool;
 
+namespace WNT{
+	/* 返回一个可用端口和其范围 */
+	void getPort(__out STU_PORT_POOL& stuPort);
 
-/* 返回一个可用端口和其范围 */
-void getPort(__out STU_PORT_POOL& stuPort);
+	/* SetPortIsAvailable */
+	void SetPortIsAvailable(__in STU_PORT_POOL stuPort);
 
-/* SetPortIsAvailable */
-void SetPortIsAvailable(__in STU_PORT_POOL stuPort);
-
-/* 获取剩余动态端口数量 */
-bool getFreeDynamicPortsNum(__out int& nNum);
+	/* 获取剩余动态端口数量 */
+	int getFreeDynamicPortsNum(__out int& nNum);
+}
