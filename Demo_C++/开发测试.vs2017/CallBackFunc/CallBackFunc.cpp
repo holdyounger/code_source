@@ -20,15 +20,11 @@ typedef int(*CallBackFunc)(int n, void *contex);
 void registNumCallBack(CallBackFunc callback, void *contex)
 {
 	int n = 3;
-	callback(n, contex);
+	cout << callback(n, contex);
 }
 
 int main()
 {
-	char ch;
-	if (ch == '0') {
-		cout << "char 为空";
-	}
 	for (int i = 0; i < 10; i++)
 	{
 		if (i % 2) {
