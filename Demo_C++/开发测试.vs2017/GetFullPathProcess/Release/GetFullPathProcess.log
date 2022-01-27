@@ -1,0 +1,8 @@
+﻿  GetFullPathProcess.cpp
+  正在生成代码
+  8 of 9 functions (88.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+g:\debug_c++\getipforwardtable\getfullpathprocess\getfullpathprocess.cpp(155): warning C4715: “getAllProcess”: 不是所有的控件路径都返回值
+  已完成代码的生成
+  GetFullPathProcess.vcxproj -> G:\Debug_C++\GetIpForwardTable\Release\GetFullPathProcess.exe

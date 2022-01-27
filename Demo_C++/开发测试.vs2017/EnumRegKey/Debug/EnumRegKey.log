@@ -1,0 +1,5 @@
+﻿  EnumRegKey.cpp
+g:\debug_c++\getipforwardtable\enumregkey\enumregkey.cpp(79): warning C4101: “achValue”: 未引用的局部变量
+g:\debug_c++\getipforwardtable\enumregkey\enumregkey.cpp(78): warning C4101: “lRet”: 未引用的局部变量
+g:\debug_c++\getipforwardtable\enumregkey\enumregkey.cpp(138): warning C4326: “wmain”的返回类型应为“int”而非“void”
+  EnumRegKey.vcxproj -> G:\Debug_C++\GetIpForwardTable\Debug\EnumRegKey.exe

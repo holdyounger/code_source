@@ -1,0 +1,12 @@
+﻿  GetWindowsStatus.cpp
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(26): warning C4326: “wmain”的返回类型应为“int”而非“void”
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(34): warning C4244: “初始化”: 从“DWORDLONG”转换到“double”，可能丢失数据
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(35): warning C4244: “初始化”: 从“DWORDLONG”转换到“double”，可能丢失数据
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(36): warning C4244: “初始化”: 从“DWORDLONG”转换到“double”，可能丢失数据
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(37): warning C4244: “初始化”: 从“DWORDLONG”转换到“double”，可能丢失数据
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(38): warning C4244: “初始化”: 从“DWORDLONG”转换到“double”，可能丢失数据
+g:\code_source\demo_c++\开发测试.vs2017\getwindowsstatus\getwindowsstatus.cpp(39): warning C4244: “初始化”: 从“DWORDLONG”转换到“double”，可能丢失数据
+  正在生成代码
+  All 6 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  GetWindowsStatus.vcxproj -> G:\Code_Source\Demo_C++\开发测试.vs2017\x64\Release\GetWindowsStatus.exe

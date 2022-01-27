@@ -1,0 +1,7 @@
+﻿  EnumRegKeyValue.cpp
+g:\code_source\demo_c++\开发测试.vs2017\enumregkeyvalue\enumregkeyvalue.cpp(12): warning C4326: “main”的返回类型应为“int”而非“void”
+g:\code_source\demo_c++\开发测试.vs2017\enumregkeyvalue\enumregkeyvalue.cpp(24): warning C4101: “timeFile”: 未引用的局部变量
+  正在生成代码
+  All 366 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  EnumRegKeyValue.vcxproj -> G:\Code_Source\Demo_C++\开发测试.vs2017\x64\Release\EnumRegKeyValue.exe

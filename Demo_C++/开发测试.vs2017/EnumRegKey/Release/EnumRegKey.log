@@ -1,0 +1,8 @@
+﻿  EnumRegKey.cpp
+g:\debug_c++\getipforwardtable\enumregkey\enumregkey.cpp(79): warning C4101: “achValue”: 未引用的局部变量
+g:\debug_c++\getipforwardtable\enumregkey\enumregkey.cpp(78): warning C4101: “lRet”: 未引用的局部变量
+g:\debug_c++\getipforwardtable\enumregkey\enumregkey.cpp(138): warning C4326: “wmain”的返回类型应为“int”而非“void”
+  正在生成代码
+  All 20 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  EnumRegKey.vcxproj -> G:\Debug_C++\GetIpForwardTable\Release\EnumRegKey.exe
