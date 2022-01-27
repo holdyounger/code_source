@@ -27,107 +27,38 @@ vector<DWORD> g_Ports;
 int main()
 {
 
-	// Declare and initialize variables
-	PMIB_TCPTABLE2 pTcpTable;
-	DWORD dwSize = 0;
-	DWORD dwRetVal = 0;
+	int iRet = 0;
+	int nNum = 0; // TCP连接的数目
 
-	char szLocalAddr[128];
-	char szRemoteAddr[128];
+	PMIB_TCPTABLE_OWNER_PID pTcpTable(NULL);
+	DWORD dwSize(0);
+	GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
+	pTcpTable = (MIB_TCPTABLE_OWNER_PID *)new char[dwSize];//重新分配缓冲区
 
-	struct in_addr IpAddr;
 
-	int i;
-
-	pTcpTable = (MIB_TCPTABLE2 *)MALLOC(sizeof(MIB_TCPTABLE2));
-	if (pTcpTable == NULL) {
-		printf("Error allocating memory\n");
-		return 1;
-	}
-
-	dwSize = sizeof(MIB_TCPTABLE2);
-	// Make an initial call to GetTcpTable to
-	// get the necessary size into the dwSize variable
-	if ((dwRetVal = GetTcpTable2(pTcpTable, &dwSize, TRUE)) ==
-		ERROR_INSUFFICIENT_BUFFER) {
-		FREE(pTcpTable);
-		pTcpTable = (MIB_TCPTABLE2 *)MALLOC(dwSize);
-		if (pTcpTable == NULL) {
-			printf("Error allocating memory\n");
-			return 1;
-		}
-	}
-	// Make a second call to GetTcpTable to get
-	// the actual data we require
-	if ((dwRetVal = GetTcpTable2(pTcpTable, &dwSize, TRUE)) == NO_ERROR) {
-		printf("\tNumber of entries: %d\n", (int)pTcpTable->dwNumEntries);
-		for (i = 0; i < (int)pTcpTable->dwNumEntries; i++) 
+	if (NO_ERROR != GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0))
+	{
+		delete pTcpTable;
+		pTcpTable = NULL;
 		{
-			IpAddr.S_un.S_addr = (u_long)pTcpTable->table[i].dwLocalAddr;
-			strcpy_s(szLocalAddr, sizeof(szLocalAddr), inet_ntoa(IpAddr));
-			IpAddr.S_un.S_addr = (u_long)pTcpTable->table[i].dwRemoteAddr;
-			strcpy_s(szRemoteAddr, sizeof(szRemoteAddr), inet_ntoa(IpAddr));
-
-			if(0)
-			{
-				printf("\n\tTCP[%d] State: %ld - ", i,
-					pTcpTable->table[i].dwState);
-				switch (pTcpTable->table[i].dwState) {
-				case MIB_TCP_STATE_CLOSED:
-					printf("CLOSED\n");
-					break;
-				case MIB_TCP_STATE_LISTEN:
-					printf("LISTEN\n");
-					break;
-				case MIB_TCP_STATE_SYN_SENT:
-					printf("SYN-SENT\n");
-					break;
-				case MIB_TCP_STATE_SYN_RCVD:
-					printf("SYN-RECEIVED\n");
-					break;
-				case MIB_TCP_STATE_ESTAB:
-					printf("ESTABLISHED\n");
-					break;
-				case MIB_TCP_STATE_FIN_WAIT1:
-					printf("FIN-WAIT-1\n");
-					break;
-				case MIB_TCP_STATE_FIN_WAIT2:
-					printf("FIN-WAIT-2 \n");
-					break;
-				case MIB_TCP_STATE_CLOSE_WAIT:
-					printf("CLOSE-WAIT\n");
-					break;
-				case MIB_TCP_STATE_CLOSING:
-					printf("CLOSING\n");
-					break;
-				case MIB_TCP_STATE_LAST_ACK:
-					printf("LAST-ACK\n");
-					break;
-				case MIB_TCP_STATE_TIME_WAIT:
-					printf("TIME-WAIT\n");
-					break;
-				case MIB_TCP_STATE_DELETE_TCB:
-					printf("DELETE-TCB\n");
-					break;
-				default:
-					printf("UNKNOWN dwState value\n");
-					break;
-				}
-				printf("\tTCP[%d] Local Addr: %s\n", i, szLocalAddr);
-				printf("\tTCP[%d] Local Port: %d \n", i,
-					ntohs((u_short)pTcpTable->table[i].dwLocalPort));
-				printf("\tTCP[%d] Remote Addr: %s\n", i, szRemoteAddr);
-				printf("\tTCP[%d] Remote Port: %d\n", i,
-					ntohs((u_short)pTcpTable->table[i].dwRemotePort));
-			}
-
-			g_Ports.push_back(pTcpTable->table[i].dwLocalPort);
+			iRet = -1;
+			goto _END_;
 		}
 	}
-	else {
-		printf("\tGetTcpTable failed with %d\n", dwRetVal);
-		FREE(pTcpTable);
-		return 1;
+
+	// TCP连接的数目
+	nNum = (int)pTcpTable->dwNumEntries;
+
+	for (int i = 0; i < nNum; i++)
+	{
+		g_Ports.push_back(htons(pTcpTable->table[i].dwLocalPort));
+	}
+
+_END_:
+	if (pTcpTable != NULL)
+	{
+		free(pTcpTable);
+		pTcpTable = NULL;
 	}
 
 	std::sort(g_Ports.begin(), g_Ports.end());
