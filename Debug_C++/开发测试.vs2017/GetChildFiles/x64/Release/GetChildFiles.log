@@ -1,7 +1,0 @@
-﻿  GetChildFiles.cpp
-g:\code_source\debug_c++\开发测试.vs2017\getchildfiles\getchildfiles.cpp(21): warning C4244: “=”: 从“intptr_t”转换到“long”，可能丢失数据
-g:\code_source\debug_c++\开发测试.vs2017\getchildfiles\getchildfiles.cpp(67): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-  正在生成代码
-  All 164 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  已完成代码的生成
-  GetChildFiles.vcxproj -> G:\Code_Source\Debug_C++\开发测试.vs2017\x64\Release\GetChildFiles.exe

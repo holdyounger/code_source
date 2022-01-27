@@ -1,8 +1,0 @@
-﻿  EnumRegKeyValue.cpp
-g:\debug_c++\getipforwardtable\enumregkeyvalue\enumregkeyvalue.cpp(12): warning C4326: “main”的返回类型应为“int”而非“void”
-g:\debug_c++\getipforwardtable\enumregkeyvalue\enumregkeyvalue.cpp(60): warning C4018: “<”: 有符号/无符号不匹配
-g:\debug_c++\getipforwardtable\enumregkeyvalue\enumregkeyvalue.cpp(24): warning C4101: “timeFile”: 未引用的局部变量
-  正在生成代码
-  All 360 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  已完成代码的生成
-  EnumRegKeyValue.vcxproj -> G:\Debug_C++\GetIpForwardTable\Release\EnumRegKeyValue.exe
