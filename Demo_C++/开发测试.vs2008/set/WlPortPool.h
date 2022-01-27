@@ -40,7 +40,7 @@ typedef struct _PORT_POOL {
 	_PORT_POOL(UINT nSta = 0, UINT nRan = 0, bool bEn = false):nStartPort(nSta),nRange(nRan),bEnabl(bEn){};
 	bool isContain(UINT uPORT)
 	{
-		if ( uPORT >= nStartPort && uPORT <= (nStartPort + nRange) )
+		if ( uPORT >= nStartPort && uPORT < (nStartPort + nRange) )
 		{
 			return true;
 		}

@@ -361,37 +361,31 @@ _END_:
 */
 int getAllTcpConnectionsPort(__out std::set<UINT>& setRet)
 {
-	int iRet                = 0;
-	ULONG size              = 0;
-	PMIB_TCPTABLE pTcpTable = NULL;
-	DWORD dwSize            = 0;
-	DWORD dwRetVal			= 0;
+	int iRet	= 0;
+	int nNum	= 0; // TCP连接的数目
 
-	GetTcpTable(NULL, &size, TRUE);
+	PMIB_TCPTABLE_OWNER_PID pTcpTable(NULL);
+	DWORD dwSize(0);
+	GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
+	pTcpTable = (MIB_TCPTABLE_OWNER_PID *)new char[dwSize];//重新分配缓冲区
 
-	if ( ERROR_INSUFFICIENT_BUFFER == (dwRetVal = GetTcpTable(pTcpTable, &dwSize, TRUE)) ) 
+
+	if ( NO_ERROR != GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) )
 	{
-		free(pTcpTable);
-		pTcpTable = (MIB_TCPTABLE *)malloc(dwSize);
-		if (pTcpTable == NULL) 
+		delete pTcpTable;
+		pTcpTable = NULL;
 		{	
 			iRet = -1;
 			goto _END_;
 		}
 	}
 
-	if ( NO_ERROR == (dwRetVal = GetTcpTable(pTcpTable, &dwSize, TRUE)) ) 
+	// TCP连接的数目
+	nNum = (int)pTcpTable->dwNumEntries; 
+
+	for (int i = 0; i < nNum; i++)
 	{
-		for (int i = 0; i < (int)pTcpTable->dwNumEntries; i++) 
-		{
-			setRet.insert(pTcpTable->table[i].dwLocalPort);
-		}
-	}
-	else 
-	{
-		free(pTcpTable);
-		iRet = -2;
-		goto _END_;
+		setRet.insert(htons(pTcpTable->table[i].dwLocalPort));
 	}
 
 _END_:
