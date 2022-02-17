@@ -9,20 +9,20 @@ import sys
 socketList = []
 
 host = socket.gethostname() # 获取本地主机名
-remoteHost = '192.168.3.128'
-remotePort = 6000                # 设置端口号
+remoteHost = input('请输入远程IP,如<192.168.3.128>：')
+remotePort = eval(input('请输入远程端口：'))                # 设置端口号
 
 errNum = 0
 ToTalNum = 0
 errPorts = {}
 
 print("请通过\'netsh int ipv4 show dynamicport tcp\'查看启动端口和端口数,一般情况下该值为49152")
-start = eval(input("启动端口:"))
-end = eval(input("终止端口:"))
+start = eval(input("本地启动端口:"))
+end = eval(input("本地终止端口:"))
 
 for i in range(start , end): 
     ToTalNum += 1
-    s = socket.socket(AF_INET,SOCK_STREAM)         # 创建 socket 对象
+    s = socket.socket()         # 创建 socket 对象
     localHostAndPort = (host,i)
     try:
         s.bind(localHostAndPort)
