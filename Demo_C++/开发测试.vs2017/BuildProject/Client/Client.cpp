@@ -34,7 +34,7 @@ int main()
 		goto END;
 	}
 
-
+	/*
 	printf("请输入端口：");
 	scanf("%d", &nPort);
 	myaddr.sin_port = htons(nPort);  //系统随机选择一个未被使用的端口号 
@@ -48,15 +48,25 @@ int main()
 
 		goto END;
 	}
-
+	*/
 
 	addrServer.sin_addr.S_un.S_addr = inet_addr("192.168.3.16");
 	addrServer.sin_family = AF_INET;
-	addrServer.sin_port = htons(50000);
+	addrServer.sin_port = htons(6000);
 
 	ioctlsocket(m_Socket, FIONBIO, &ul);
 
 	dwResult = connect(m_Socket, (SOCKADDR*)&addrServer, sizeof(SOCKADDR));
+	if (0 != dwResult)
+	{
+		printf("connect failed, WSAGetLastError() = %d\n", WSAGetLastError());
+
+	}
+	else
+	{
+		printf("connect OK \n");
+	}
+
 	if ((SOCKET_ERROR == dwResult) && (WSAEWOULDBLOCK == WSAGetLastError()))
 	{
 		timeval stcTime;
@@ -115,6 +125,7 @@ int main()
 	}
 
 	printf("SUCCESS!!!\n");
+	system("pause");
 END:
 
 	if (m_Socket != INVALID_SOCKET)
