@@ -121,10 +121,10 @@ void testVector()
 
 int main()
 {
-	int num;
+	int num = 0;
 	STU_PORT_POOL stuPort;
 
-	if (NO_ERROR == WNT::getFreeDynamicPortsNum(num))
+	if (NO_ERROR == WNTPORT::getPortPoolStatus())
 	{
 		cout << "num:" << num << endl;
 	}
@@ -133,13 +133,13 @@ int main()
 		cout << "获取失败"<< endl;
 	}
 	
-	WNT::getPort(stuPort);
+	WNTPORT::getPort(stuPort);
 	cout << "start port:" << stuPort.nStartPort << endl;
 	cout << "range:" << stuPort.nRange << endl;
-	cout << "Enable:" << stuPort.bEnabl << endl;
+	cout << "Enable:" << stuPort.bEnable << endl;
 
-	stuPort.bEnabl = false;
-	WNT::SetPortIsAvailable(stuPort);
+	stuPort.bEnable = false;
+	WNTPORT::SetPortIsAvailable(stuPort);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

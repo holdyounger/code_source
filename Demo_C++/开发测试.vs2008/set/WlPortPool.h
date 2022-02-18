@@ -27,17 +27,19 @@
 #pragma comment(lib, "IPHlpApi.lib")
 
 #define MAX_PORT_NUM		10		// 最大只允许存在10个端口池
-#define DEFAULT_START_PORT	1024	// 默认启动端口：1024
-#define DEFAULT_STOP_PORT	65535	// 默认启动端口：65535
+#define DEFAULT_START_PORT	1025	// 默认启动端口：1025
+#define DEFAULT_STOP_PORT	65535	// 默认终止端口：65535
 #define DEFAULT_PORT_RANGE	100		// 默认端口范围：100
+#define DEFAULT_MIN_PORTRANGE 50	// 最小端口范围
+#define START_STATIC_PORT_FLAG 100	// 动态端口个数：启动端口池的标识
 
 /* 端口池结构体 */
 typedef struct _PORT_POOL {
 	UINT nStartPort;	// 启动端口
 	UINT nRange;		// 端口范围
-	bool bEnabl;
+	bool bEnable;
 
-	_PORT_POOL(UINT nSta = 0, UINT nRan = 0, bool bEn = false):nStartPort(nSta),nRange(nRan),bEnabl(bEn){};
+	_PORT_POOL(UINT nSta = 0, UINT nRan = 0, bool bEn = false):nStartPort(nSta),nRange(nRan),bEnable(bEn){};
 	bool isContain(UINT uPORT)
 	{
 		if ( uPORT >= nStartPort && uPORT < (nStartPort + nRange) )
@@ -50,7 +52,7 @@ typedef struct _PORT_POOL {
 	bool isLegal()
 	{
 		if( (this->nStartPort + this->nRange) <= DEFAULT_STOP_PORT &&
-			(this->nStartPort + this->nRange) >= DEFAULT_START_PORT
+			(this->nStartPort) >= DEFAULT_START_PORT
 			)
 		{
 			return true;
@@ -67,13 +69,30 @@ typedef struct _PORT_POOL {
 /* 全局变量-端口数组 */
 extern std::vector<STU_PORT_POOL> g_stuPortPool;
 
-namespace WNT{
-	/* 返回一个可用端口和其范围 */
-	void getPort(__out STU_PORT_POOL& stuPort);
+#ifdef __cplusplus
+extern "C" {
+#endif
+	namespace WNTPORT {
+	
+		extern bool g_bFlagGetStaticPort;	// 为真表示启用端口池
+		extern bool g_bStartThread;			// 为假表示停止线程
+		extern int g_nCurPoint;				// 端口池轮询
+		
+		/* 设置当前端口状态 */
+		void WINAPI SetPortIsAvailable(__in STU_PORT_POOL stuPort);
 
-	/* SetPortIsAvailable */
-	void SetPortIsAvailable(__in STU_PORT_POOL stuPort);
+		/* 端口池线程 */
+		void startScanPortsThread();
 
-	/* 获取剩余动态端口数量 */
-	int getFreeDynamicPortsNum(__out int& nNum);
+		/* 杀死线程 */
+		void killScanPortsThread();
+
+		/* 返回一个可用端口和其范围 */
+		void WINAPI getPort(__out STU_PORT_POOL& stuPort);
+
+		/* 返回端口池状态 */
+		bool WINAPI getPortPoolStatus();
+	}
+#ifdef __cplusplus
 }
+#endif

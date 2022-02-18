@@ -11,14 +11,20 @@
  *************************************************************************/
 #include "StdAfx.h"
 #include "WLPortPool.h"
+#include <process.h>
 
 
 #define STU_MEMBER_NUM		2
 #define CMD_RESULT_BUF_SIZE 1024
-
+#define SCAN_FREQUENCY		1000 * 30
 #define CMD_QUERY_DYNAMIC_TCP "netsh int ipv4 show dynamicport tcp"
 
 std::vector<STU_PORT_POOL> g_stuPortPool;
+
+bool WNTPORT::g_bFlagGetStaticPort = false;
+bool WNTPORT::g_bStartThread = false;
+int WNTPORT::g_nCurPoint = 0;
+
 
 #if 0 /* 接口声明 */
 #endif
@@ -37,10 +43,16 @@ int getFreeDynamicPort(__in STU_PORT_POOL stuDynamicPort, __in std::set<UINT> Cu
 int getFreeStaticPort(__in STU_PORT_POOL stuDynamicPort, __in std::set<UINT> CurSysUsedPort, __out std::vector<STU_PORT_POOL>& stuFreeStaticPort);
 
 // 更新端口
-void updatePort();
+void updatePort(__in __out std::vector<STU_PORT_POOL>::iterator it);
 
 // 创建端口池
-int creatPortPool();
+int createPortPool();
+
+// 获取剩余动态端口数量 
+int getFreeDynamicPortsNum(__out int& nNum);
+
+// 线程：获取系统当前剩余动态端口数量
+unsigned int WINAPI scanSysDynamicPortsNum(void* lpParam);
 
 #if 0 /* 对外接口定义 */
 #endif
@@ -49,32 +61,56 @@ int creatPortPool();
 * @brief		返回一个可用端口和其范围
 * @param[in]	
 * @param[out]   STU_PORT_POOL: 返回一个可用端口，如果调用失败，则修改stuPort中的BEnable为false
-* @return		
+* @return		0 表示成功；其他表示失败
 *               
 * @detail      	依次返回端口池中的端口和范围
 * @author		mingming.shi
 * @date			2022-1-24
 */
-void WNT::getPort(__out STU_PORT_POOL& stuPort)
+void WINAPI WNTPORT::getPort(__out STU_PORT_POOL& stuPort)
 {
 	int iRet = -1;
+	std::vector<STU_PORT_POOL>::iterator it = g_stuPortPool.begin();
+
 	if ( 0 == g_stuPortPool.size() ) // 当前端口池为空
 	{
-		iRet = creatPortPool();
-	}
-	else
-	{
-		stuPort = *g_stuPortPool.begin();
+		iRet = createPortPool();
+		if (NO_ERROR != iRet)
+		{
+			printf(("LINE [%d] Create Port Pool FAILED!"), __LINE__);
+			return;
+		}
 	}
 
-	if (NO_ERROR == iRet)
+	it = g_stuPortPool.begin();
+	for (int i = 0; it != g_stuPortPool.end(); it++)
 	{
-		stuPort = *g_stuPortPool.begin();
+		if (false == it->isLegal())
+		{
+			updatePort(it);
+		}
+
+		if ( true == it->bEnable &&		// 当前端口可用
+			true == it->isLegal() &&	// 当前端口合法
+			i == g_nCurPoint)			// 轮询
+		{
+			STU_PORT_POOL stuTemp;
+			stuTemp = *it;
+
+			stuPort.nStartPort = stuTemp.nStartPort;
+			stuPort.nRange = stuTemp.nRange;
+			stuPort.bEnable = stuTemp.bEnable;
+
+			g_nCurPoint++;
+			if (g_nCurPoint >= 10)
+			{
+				g_nCurPoint = 0;
+			}
+			break;
+		}
+		i++;
 	}
-	else
-	{
-		stuPort.bEnabl = false;
-	}
+
 }
 
 /*
@@ -88,85 +124,71 @@ void WNT::getPort(__out STU_PORT_POOL& stuPort)
 * @author		mingming.shi
 * @date			2022-1-24
 */
-void WNT::SetPortIsAvailable(__in STU_PORT_POOL stuPort)
+void WINAPI WNTPORT::SetPortIsAvailable(__in STU_PORT_POOL stuPort)
 {
 	std::vector<STU_PORT_POOL>::iterator it = g_stuPortPool.begin();
 	for (; it != g_stuPortPool.end(); it++)
 	{
 		if (it->nStartPort == stuPort.nStartPort &&
 			it->nRange == stuPort.nRange && 
-			stuPort.bEnabl == false) // 当前端口不可用
+			stuPort.bEnable == false) // 当前端口不可用
 		{
-			g_stuPortPool.erase(it);
+			// g_stuPortPool.erase(it);
+			break;
 		}
 	}
 
-	updatePort();
+	updatePort(it);
 }
 
 /*
-* @fn			getFreeDynamicPortsNum
-* @brief		获取剩余动态端口数量
+* @fn			mainThread
+* @brief		端口池线程,入口函数
 * @param[in]    
-* @param[out]	nNum：系统空闲动态端口数量
-* @return		0 表示成功，其他表示失败
+* @param[out]	
+* @return		pthread handler.
+*               
+* @detail      	caller can teminal pthread by this handler.
+* @author		mingming.shi
+* @date			2022-1-27
+*/
+void WNTPORT::startScanPortsThread()
+{
+	g_bStartThread = true;
+	HANDLE hThread = (HANDLE)_beginthreadex(NULL, 0, scanSysDynamicPortsNum, 0, 0, NULL);
+	if (NULL == hThread)
+	{
+		printf(("Create scanSysDynamicPortsNum thread error. [%d]"), GetLastError());
+	}
+	CloseHandle(hThread);
+	
+	Sleep( SCAN_FREQUENCY );
+}
+
+/*
+* @fn			killScanPortsThread
+* @brief		杀死扫描动态端口的线程
+* @param[in]    
+* @param[out]	
+* @return		
 *               
 * @detail      	
 * @author		mingming.shi
-* @date			2022-1-24
+* @date			2022-1-28
 */
-int WNT::getFreeDynamicPortsNum(__out int& nNum)
+void WNTPORT::killScanPortsThread()
 {
-	int iRet = 0;
-	int nPortsNum = 0;
+	g_bStartThread = false;
 
-	STU_PORT_POOL stuDynamicPort;
-	std::set<UINT> CurSysUsedPort;
-	std::set<UINT>::iterator it;
-
-	// 1 获取动态端口状态（起始地址和范围）
-	iRet = getDynamicPortFromstr(stuDynamicPort);
-	if ( NO_ERROR != iRet ) 
+	if (g_stuPortPool.size())
 	{
-		iRet = -1;
-		goto _END_;
+		g_stuPortPool.clear();
 	}
+}
 
-	printf("动态端口启动地址：%d\n", stuDynamicPort.nStartPort);
-	printf("动态端口范围：%d\n", stuDynamicPort.nRange);
-
-	// 2 获取当前系统端口占用情况
-	iRet = getAllTcpConnectionsPort(CurSysUsedPort);
-	if ( NO_ERROR != iRet ) 
-	{
-		iRet = -2;
-		goto _END_;
-	}
-	
-	// 3 统计动态端口个数
-	for (it = CurSysUsedPort.begin(); it != CurSysUsedPort.end(); it++)
-	{
-		if(true == stuDynamicPort.isContain(*it))
-		{
-			nPortsNum++;
-			printf("%d:%d ",nPortsNum, *it);
-			if (nPortsNum % 10 == 0)
-			{
-				printf("\n");
-			}
-			
-		}
-	}
-	printf("被占用\n动态端口占用个数：%d\n", nPortsNum);
-
-	nNum = stuDynamicPort.nRange - nPortsNum;
-	iRet = 0;
-_END_:
-	if (CurSysUsedPort.size())
-	{
-		CurSysUsedPort.clear();
-	}
-	return iRet;
+bool WINAPI WNTPORT::getPortPoolStatus()
+{
+	return g_bFlagGetStaticPort;
 }
 
 #if 0 /* 接口定义 */
@@ -188,7 +210,7 @@ _END_:
 * @author		mingming.shi
 * @date			2022-1-24
 */
-int creatPortPool()
+int createPortPool()
 {
 	int iRet = 0;
 	std::vector<STU_PORT_POOL> stuPortPool;			// 保存接口返回的端口范围
@@ -264,7 +286,7 @@ static int executeCMD(__out char *pChRet)
 	}
 	else
 	{
-	
+		printf(("popen %s error\n"), pChBuf);
 		iRet = -1; // 处理失败
 	}
 
@@ -317,12 +339,12 @@ int getDynamicPortFromstr(__out STU_PORT_POOL& stuDynamicPort)
 	for (size_t i = 0; i < nLen; i++) {
 		int CurNum = 0;
 		bool flag = false;
-		while ( !(str[i] >= '0' && str[i] <= '9') && i < nLen ) 
+		while ( !(str[i] >= '0' && str[i] <= '9') && i < nLen ) // 遍历到数字
 		{
 			i++;
 		}
 
-		while ( (str[i] >= '0' && str[i] <= '9') && i < nLen ) 
+		while ( (str[i] >= '0' && str[i] <= '9') && i < nLen ) // 遍历到字母
 		{
 			flag = true;
 			CurNum = CurNum * 10 + (str[i] - '0');
@@ -368,7 +390,6 @@ int getAllTcpConnectionsPort(__out std::set<UINT>& setRet)
 	DWORD dwSize(0);
 	GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
 	pTcpTable = (MIB_TCPTABLE_OWNER_PID *)new char[dwSize];//重新分配缓冲区
-
 
 	if ( NO_ERROR != GetExtendedTcpTable(pTcpTable, &dwSize, TRUE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) )
 	{
@@ -479,11 +500,11 @@ int getFreeStaticPort(__in STU_PORT_POOL stuDynamicPort, __in std::set<UINT> Cur
 			}while ( 
 				CurSysUsedPort.end() ==  CurSysUsedPort.find(nPort + nRange) && // 系统未使用
 				false == stuDynamicPort.isContain(nPort + nRange) && // 不在动态端口范围
-				nRange <= DEFAULT_PORT_RANGE); // 范围小于默认端口范围
+				nRange < DEFAULT_PORT_RANGE); // 范围小于默认端口范围
 
 			stuTempPort.nStartPort	= nPort;
-			stuTempPort.nRange		= nRange;
-			stuTempPort.bEnabl		= true;
+			stuTempPort.nRange		= nRange >= DEFAULT_MIN_PORTRANGE ? nRange : DEFAULT_MIN_PORTRANGE;
+			stuTempPort.bEnable		= true;
 
 			// 更新启动端口并检查合法性
 			nPort += nRange; 
@@ -503,13 +524,80 @@ _END_:
 	return iRet;
 }
 
-void updatePort()
+/*
+* @fn			getFreeDynamicPortsNum
+* @brief		获取剩余动态端口数量
+* @param[in]    
+* @param[out]	nNum：系统空闲动态端口数量
+* @return		0 表示成功，其他表示失败
+*               
+* @detail      	
+* @author		mingming.shi
+* @date			2022-1-24
+*/
+int getFreeDynamicPortsNum(__out int& nNum)
 {
-	int iRet = -1;
+	int iRet = 0;
+	int nPortsNum = 0;
+
+	STU_PORT_POOL stuDynamicPort;
+	std::set<UINT> CurSysUsedPort;
+	std::set<UINT>::iterator it;
+
+	// 1 获取动态端口状态（起始地址和范围）
+	iRet = getDynamicPortFromstr(stuDynamicPort);
+	if ( NO_ERROR != iRet ) 
+	{
+		iRet = -1;
+		goto _END_;
+	}
+
+	// 2 获取当前系统端口占用情况
+	iRet = getAllTcpConnectionsPort(CurSysUsedPort);
+	if ( NO_ERROR != iRet ) 
+	{
+		iRet = -2;
+		goto _END_;
+	}
+
+	// 3 统计动态端口个数
+	for (it = CurSysUsedPort.begin(); it != CurSysUsedPort.end(); it++)
+	{
+		if(true == stuDynamicPort.isContain(*it))
+		{
+			nPortsNum++;
+		}
+	}
+
+	nNum = stuDynamicPort.nRange - nPortsNum;
+	iRet = 0;
+
+_END_:
+	if (CurSysUsedPort.size())
+	{
+		CurSysUsedPort.clear();
+	}
+	return iRet;
+}
+
+/*
+* @fn			updatePort
+* @brief		更新一个端口到端口池中，内部实现接口
+* @param[in]    
+* @param[out]	
+* @return		
+*               
+* @detail      	
+* @author		mingming.shi
+* @date			2022-1-27
+*/
+void updatePort(__in __out std::vector<STU_PORT_POOL>::iterator it)
+{
 	UINT nStart = DEFAULT_START_PORT;
 	UINT nEnd	= DEFAULT_STOP_PORT;
 	STU_PORT_POOL	stuDynamicPort;
 	std::set<UINT>	CurSysUsedPort;
+	std::vector<STU_PORT_POOL>::reverse_iterator itPortPoolEnd = g_stuPortPool.rbegin();
 
 	// 1 获取动态端口状态（起始地址和范围）
 	getDynamicPortFromstr(stuDynamicPort);
@@ -518,8 +606,14 @@ void updatePort()
 	getAllTcpConnectionsPort(CurSysUsedPort);
 
 	// 3 更新启动端口，从端口池最后一个端口开始
-	STU_PORT_POOL stuTempPort = g_stuPortPool[g_stuPortPool.size() - 1];
-	nStart = stuTempPort.nStartPort + stuTempPort.nRange;
+	if (itPortPoolEnd->isLegal())
+	{
+		nStart = itPortPoolEnd->nStartPort > DEFAULT_START_PORT ? itPortPoolEnd->nStartPort : DEFAULT_START_PORT;
+	}
+	if (nStart >= DEFAULT_STOP_PORT)
+	{
+		nStart = DEFAULT_START_PORT;
+	}
 
 	for (UINT nPort = nStart; nPort <= DEFAULT_STOP_PORT; ++nPort)
 	{
@@ -539,10 +633,9 @@ void updatePort()
 				}
 			}
 
-		
 			stuTempPort.nStartPort	= nPort;
 			stuTempPort.nRange		= nRange;
-			stuTempPort.bEnabl		= true;
+			stuTempPort.bEnable		= true;
 
 			// 更新启动端口并检查合法性
 			nPort += nRange; 
@@ -551,7 +644,9 @@ void updatePort()
 
 		if (true == stuTempPort.isLegal())
 		{
-			g_stuPortPool.push_back(stuTempPort);
+			it->nStartPort = stuTempPort.nStartPort;
+			it->nRange = stuTempPort.nRange;
+			it->bEnable = stuTempPort.bEnable;
 		}
 		
 		if (g_stuPortPool.size() > MAX_PORT_NUM)
@@ -559,4 +654,54 @@ void updatePort()
 			break;
 		}
 	}
+}
+
+/*
+* @fn			scanSysDynamicPortsNum
+* @brief		扫描系统当前剩余动态端口数量
+* @param[in]    
+* @param[out]	
+* @return		
+*               
+* @detail      	
+* @author		mingming.shi
+* @date			2022-1-27
+*/
+unsigned int WINAPI scanSysDynamicPortsNum(void* lpParam)
+{
+	int iRet = -1;
+
+	while(true == WNTPORT::g_bStartThread)
+	{
+		int nDynamicNum = INT_MAX;
+
+		if ( NO_ERROR != getFreeDynamicPortsNum(nDynamicNum) )
+		{
+			printf(("LINE [%d] PortPool Get Dynamic Port Number Failed!\n"), __LINE__);
+			iRet = -1;
+			goto _END_;
+		}
+
+		if (START_STATIC_PORT_FLAG >= nDynamicNum) // 查找静态端口
+		{
+			// WriteInfo(_T("LINE [%d] PortPool Start Get Static Port!\n"), __LINE__);
+			iRet = createPortPool();
+			if (NO_ERROR != iRet)
+			{
+				printf(("LINE [%d] PortPool Create Static PortPool FAILED!\n"), __LINE__);
+				iRet = -2;
+				goto _END_;
+			}
+			WNTPORT::g_bFlagGetStaticPort = true;
+		}
+		else
+		{
+			WNTPORT::g_bFlagGetStaticPort = false;
+		}
+
+		iRet = 0;
+	}
+	
+_END_:
+	return iRet;
 }
