@@ -3,10 +3,35 @@
 //
 
 #include <iostream>
+#include <process.h>
+#include <windows.h>
+
+bool g_stopTh1 = false;
+
+void funcTh1(void *)
+{
+	int i = 0;
+	while (g_stopTh1)
+	{
+		std::cout << i++ << std::endl;
+		Sleep(1000);
+	}
+	return;
+}
 
 int main()
 {
+	g_stopTh1 = true;
     std::cout << "Hello World!\n";
+
+	HANDLE handle = (HANDLE)_beginthread(funcTh1, 0, NULL);
+
+	std::cout << "Hello World!\n";
+	
+	CloseHandle(handle);
+
+	Sleep(10000);
+	g_stopTh1 = false;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
