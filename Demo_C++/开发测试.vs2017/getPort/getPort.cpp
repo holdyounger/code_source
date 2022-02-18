@@ -84,6 +84,7 @@ _END_:
 		}
 	}
 
+	cout << "num of all ports" << g_Ports.size() << endl;
 	return 0;
 }
 
