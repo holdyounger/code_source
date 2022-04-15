@@ -105,3 +105,8 @@ Demo_C++/开发测试.vs2017/BuildProject/.vs
 Demo_C++/开发测试.vs2017/**/Release
 Demo_C++/开发测试.vs2017/**/Release/**
 Demo_C++/开发测试.vs2017/*/Release/**
+
+# --------------------------------------
+# Qt文件
+# 忽略build文件
+Demo_Qt/build-*-* 
