@@ -46,18 +46,10 @@ Thumbs.db
 .*.swp
 
 # Visual Studio generated files
-*.ib_pdb_index
-*.idb
-*.ilk
-*.pdb
-*.suo
-*.vcproj
-*vcproj.*.*.user
-*.ncb
-*.sdf
-*.opensdf
-*.vcxproj
-*vcxproj.*
+*.filters
+*.user
+
+
 
 # MinGW generated files
 *.Debug
@@ -86,27 +78,11 @@ Thumbs.db
 */*/.vs
 *.log
 
-# vs工程文件
-Demo_C++/开发测试.vs2017/Debug/*.*
-Demo_C++/开发测试.vs2017/Debug/*
-Demo_C++/开发测试.vs2017/x64/*
-Demo_C++/开发测试.vs2017/x64/*.*
-Demo_C++/开发测试.vs2017/Release/*.*
-Demo_C++/开发测试.vs2017/Release/*
-Demo_C++/开发测试.vs2017/*/x64
-/Demo_C++/开发测试.vs2017/BuildProject/x64
-Release
-build
-/Demo_Python/网络编程/*.spec
-dist
-Demo_C++/开发测试.vs2017/BuildProject/.vs
-
-# 2017 release 文件
-Demo_C++/开发测试.vs2017/**/Release
-Demo_C++/开发测试.vs2017/**/Release/**
-Demo_C++/开发测试.vs2017/*/Release/**
+# vs Debug/Release目录下文件
+**/Debug/*
+**/Release/*
 
 # --------------------------------------
 # Qt文件
 # 忽略build文件
-Demo_Qt/build-*-* 
+*Qt/build-*-* 
