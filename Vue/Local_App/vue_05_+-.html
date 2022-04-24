@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<style>
+    #app{
+        text-align: center;
+        vertical-align: middle;
+        padding: 300px;
+        font-size: 100px;
+    }
+    button{
+        font-size: 100px;
+        width: 200px;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <title>Vue_05_+-</title>
+    <script src="https://static.runoob.com/assets/vue/1.0.11/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app" class="input-num">
+        <button @click="sub">-</button>
+        <span>{{ num }}</span>
+        <button @click="add">+</button>
+    </div>
+    <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!',
+                num: 1
+            },
+            methods: {
+                add: function () {
+                    console.log("add");
+                    if (this.num < 10) {
+                        this.num++;
+                    } else {
+                        alert("已经是最大值了");
+                    }
+                },
+                sub: function () {
+                    console.log("sub");
+                    if (this.num > 0) {
+                        this.num--;
+                    } else {
+                        alert("已经是最小值了");
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

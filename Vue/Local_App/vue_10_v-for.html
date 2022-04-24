@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+
+    </style>
+    <meta charset="utf-8">
+    <title>vue_10_v-for</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p v-for="(it,index) in msg" :title="it">{{ it }}</p>
+        <hr>
+        <p v-for="it_2 in msg_2.content" :title="it_2">{{ it_2.sentence }}</p>
+    </div>
+    <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!',
+                msg: [
+                    "荷花",
+                    "李商隐〔唐代〕",
+                    "都无色可并，不奈此香何。",
+                    "瑶席乘凉设，金羁落晚过。",
+                    "回衾灯照绮，渡袜水沾罗。",
+                    "预想前秋别，离居梦棹歌。"
+                ],
+                msg_2:{
+                title: "荷花",
+                author: "李商隐〔唐代〕",
+                content: [
+                    {
+                        sentence: "都无色可并，不奈此香何。",
+                    },
+                    {
+                        sentence: "瑶席乘凉设，金羁落晚过。",
+                    },
+                    {
+                        sentence: "回衾灯照绮，渡袜水沾罗。",
+                    },
+                    {
+                        sentence: "预想前秋别，离居梦棹歌。",
+                    }
+                ]
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>vue_04_交互</title>
+<script src="https://static.runoob.com/assets/vue/1.0.11/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <input type="button" value="v-on指令" v-on:click="doIt">
+  <input type="button" value="v-on简写" @click="doIt">
+  <input type="button" value="双击事件" @dblclick="doIt">
+  <h2 @dblclick="changeFood">{{ food }}</h2>
+</div>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    food: "西蓝花炒蛋",
+    todos: [
+      { text: '菜鸟教程' },
+      { text: 'www.runoob.com' },
+      { text: 'www.w3cschool.cc' }
+    ]
+  },
+  methods: {
+    doIt:function(){
+        alert("this is 'Hello World' Button");
+    },
+    changeFood:function(){
+        console.log(this.food);
+        this.food+="好好吃！";
+    }
+  }
+})
+</script>
+</body>
+</html>
