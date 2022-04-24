@@ -4,5 +4,5 @@
 
 ## 说明
 
-Wiki ->[ooone.vercel.app](ooone.vercel.app)
+Wiki ->[ooone.vercel.app](https://ooone.vercel.app)
 
