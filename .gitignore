@@ -1,3 +1,10 @@
+# master ignore Files
+Go/
+Python/
+Qt/
+Vue/
+go.mod
+
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
