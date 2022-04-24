@@ -100,6 +100,6 @@ void Widget::on_pushButton_clicked()
       if(i < 0)
           i = List2Print->length() - 1;
     });
-    timer->deleteLater();
+    //timer->deleteLater();
 }
 
