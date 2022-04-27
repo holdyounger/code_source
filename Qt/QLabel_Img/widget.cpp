@@ -1,13 +1,42 @@
-#include "widget.h"
+﻿#include "widget.h"
 #include "ui_widget.h"
 
 #include <QLatin1String>
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1600)
+    #pragma execution_character_set("utf-8")
+#endif
+
+#define TEXT_COLOR_RED(STRING)         "<font color=red>" + STRING + "</font>" "<font color=black> </font>"
+#define TEXT_COLOR_BLUE(STRING)        "<font color=blue>" + STRING + "</font>" "<font color=black> </font>"
+#define TEXT_COLOR_GREEN(STRING)        "<font color=green>" + STRING + "</font>" "<font color=black> </font>"
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+//    setStyleSheet(QString("QWidget:hover {"
+//                          "border: 2px solid #308BFF;"
+//                          "}"));
+    //setMouseTracking(true);
+
+    ui->toolButton->setIconSize(QSize(106,106));
+    ui->toolButton->setIcon(QIcon(":/app_icon2.png"));
+    ui->toolButton->setStyleSheet(QString("QToolButton {"
+                                           "border: none;"
+                                           "border-radius: 4px;"
+                                           "}"
+                                           "QToolButton:hover {"
+                                           "border: 2px solid #308BFF;"
+                                           "}"));
+    ui->textBrowser->setReadOnly(true);
+    QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>";
+    ui->textBrowser->setHtml(html);
+    ui->textBrowser->setText(QString("测试文本"));
+
+
 
     QFileInfo info(":/Win11.png");
 
@@ -22,7 +51,6 @@ Widget::Widget(QWidget *parent)
 
     ui->label->setPixmap(img);
     ui->label->setScaledContents(true);
-
 
     ui->label->setToolTip(QString("壁纸《Win11.png》"));
     ui->pushButton->setToolTip(QString("隐藏或显示图片"));
@@ -101,5 +129,26 @@ void Widget::on_pushButton_clicked()
           i = List2Print->length() - 1;
     });
     //timer->deleteLater();
+}
+
+void Widget::QTimerTest()
+{
+        QTimer *timer = new QTimer;
+        connect(timer, &QTimer::timeout, this, [=]()mutable{
+            QString content = ui->textBrowser->document()->toPlainText();
+            qDebug() << ui->textBrowser->frameGeometry() << QCursor::pos() << endl;
+            if(ui->textBrowser->frameGeometry().contains(QCursor::pos()))
+            {
+                qDebug() << "Enter" << endl;
+                ui->textBrowser->setText(TEXT_COLOR_GREEN(content));
+            }
+            else
+            {
+                qDebug() << "Enterless" << endl;
+                ui->textBrowser->setText(TEXT_COLOR_RED(content));
+            }
+        });
+
+        timer->start(500);
 }
 

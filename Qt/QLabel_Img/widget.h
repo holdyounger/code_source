@@ -1,4 +1,4 @@
-#ifndef WIDGET_H
+﻿#ifndef WIDGET_H
 #define WIDGET_H
 
 #include <QWidget>
@@ -12,6 +12,8 @@
 #include <QStringList>
 #include <QDebug>
 #include <QTimer>
+#include <QCursor>
+#include <QTextBrowser>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -35,5 +37,8 @@ private:
 
 private:
     QStringList *List2Print;
+
+private:
+    void QTimerTest();
 };
 #endif // WIDGET_H

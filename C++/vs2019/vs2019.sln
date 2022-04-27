@@ -21,6 +21,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bind", "bind\bind.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QListWidgetTest", "QListWidgetTest\QListWidgetTest.vcxproj", "{1CB90BBA-6890-45A4-A0B3-1D83CAB33B52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LeetCode", "LeetCode", "{ED05B8CD-467A-4109-9AE0-F6E29A141E3B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileSizeConvert", "FileSizeConvert\FileSizeConvert.vcxproj", "{6E4180D1-1745-4089-8E20-4E84B38BE3C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -66,6 +70,14 @@ Global
 		{1CB90BBA-6890-45A4-A0B3-1D83CAB33B52}.Release|x64.ActiveCfg = Release|Win32
 		{1CB90BBA-6890-45A4-A0B3-1D83CAB33B52}.Release|x86.ActiveCfg = Release|Win32
 		{1CB90BBA-6890-45A4-A0B3-1D83CAB33B52}.Release|x86.Build.0 = Release|Win32
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Debug|x64.ActiveCfg = Debug|x64
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Debug|x64.Build.0 = Debug|x64
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Debug|x86.ActiveCfg = Debug|Win32
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Debug|x86.Build.0 = Debug|Win32
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Release|x64.ActiveCfg = Release|x64
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Release|x64.Build.0 = Release|x64
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Release|x86.ActiveCfg = Release|Win32
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +87,7 @@ Global
 		{5D92115B-0F5D-457F-B926-3CA969CB9B64} = {9CB386CA-3F38-4693-AFFB-0B2BEFB0284B}
 		{0E9631F9-0A40-42DC-9C4F-AFA1327D0E2A} = {A6838175-BA3B-44D9-9C9A-DC81F8AF6AC6}
 		{1CB90BBA-6890-45A4-A0B3-1D83CAB33B52} = {7D99400E-B5C5-4573-BFD1-92B8326C0833}
+		{6E4180D1-1745-4089-8E20-4E84B38BE3C5} = {ED05B8CD-467A-4109-9AE0-F6E29A141E3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C5395B3-99E4-49E6-9943-488DC8B01AB6}
