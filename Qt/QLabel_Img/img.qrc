@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Win11</file>
+        <file>app_icon2.png</file>
+    </qresource>
+</RCC>
