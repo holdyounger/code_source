@@ -73,7 +73,11 @@ bld/
 *.idx
 
 # build directory
-*/build-*/
+# Qt Release 目录
+*-Release/ 
+# Qt Debug 目录
+*-Debug/   
+
 
 # libraries
 deploy/
