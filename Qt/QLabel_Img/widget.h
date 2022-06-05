@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QCursor>
 #include <QTextBrowser>
+#include <QMovie>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -32,11 +33,16 @@ private slots:
     void stTrayIconActive(QSystemTrayIcon::ActivationReason acReason);
     void on_pushButton_clicked();
 
+    void on_label_linkHovered(const QString &link);
+
 private:
     Ui::Widget *ui;
+    QMovie *movie;
 
 private:
     QStringList *List2Print;
+
+    bool eventFilter(QObject *wcg, QEvent *event);//事件过滤
 
 private:
     void QTimerTest();

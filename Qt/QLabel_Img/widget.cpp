@@ -4,7 +4,7 @@
 #include <QLatin1String>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1600)
-    #pragma execution_character_set("utf-8")
+#pragma execution_character_set("utf-8")
 #endif
 
 #define TEXT_COLOR_RED(STRING)         "<font color=red>" + STRING + "</font>" "<font color=black> </font>"
@@ -17,20 +17,20 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-//    setStyleSheet(QString("QWidget:hover {"
-//                          "border: 2px solid #308BFF;"
-//                          "}"));
+    //    setStyleSheet(QString("QWidget:hover {"
+    //                          "border: 2px solid #308BFF;"
+    //                          "}"));
     //setMouseTracking(true);
 
     ui->toolButton->setIconSize(QSize(106,106));
     ui->toolButton->setIcon(QIcon(":/app_icon2.png"));
     ui->toolButton->setStyleSheet(QString("QToolButton {"
-                                           "border: none;"
-                                           "border-radius: 4px;"
-                                           "}"
-                                           "QToolButton:hover {"
-                                           "border: 2px solid #308BFF;"
-                                           "}"));
+                                          "border: none;"
+                                          "border-radius: 4px;"
+                                          "}"
+                                          "QToolButton:hover {"
+                                          "border: 2px solid #308BFF;"
+                                          "}"));
     ui->textBrowser->setReadOnly(true);
     QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>";
     ui->textBrowser->setHtml(html);
@@ -48,9 +48,13 @@ Widget::Widget(QWidget *parent)
 
 
     QPixmap img(":/Win11");
+    movie = new QMovie(":/test.gif");
 
-    ui->label->setPixmap(img);
-    ui->label->setScaledContents(true);
+    ui->label->setMovie(movie);
+    movie->start();
+
+    //    ui->label->setPixmap(img);
+    //    ui->label->setScaledContents(true);
 
     ui->label->setToolTip(QString("壁纸《Win11.png》"));
     ui->pushButton->setToolTip(QString("隐藏或显示图片"));
@@ -80,6 +84,11 @@ Widget::Widget(QWidget *parent)
 
     //托盘的消息提示
     trayIcon->showMessage("title", "this is a message", icon1);
+
+
+    // line Edit 焦点
+    ui->lineEdit->installEventFilter(this);
+    ui->label_2->installEventFilter(this);
 
 }
 
@@ -119,36 +128,67 @@ void Widget::on_pushButton_clicked()
         ui->label->setVisible(true);
     }
 
+    return ;
     QTimer *timer = new QTimer;
     timer->start(1000);
 
     int i = List2Print->length() - 1;
     connect(timer, &QTimer::timeout, this, [=]() mutable {
-      qDebug() << List2Print->at(i--) << endl;
-      if(i < 0)
-          i = List2Print->length() - 1;
+        qDebug() << List2Print->at(i--) << endl;
+        if(i < 0)
+            i = List2Print->length() - 1;
     });
     //timer->deleteLater();
 }
 
 void Widget::QTimerTest()
 {
-        QTimer *timer = new QTimer;
-        connect(timer, &QTimer::timeout, this, [=]()mutable{
-            QString content = ui->textBrowser->document()->toPlainText();
-            qDebug() << ui->textBrowser->frameGeometry() << QCursor::pos() << endl;
-            if(ui->textBrowser->frameGeometry().contains(QCursor::pos()))
-            {
-                qDebug() << "Enter" << endl;
-                ui->textBrowser->setText(TEXT_COLOR_GREEN(content));
-            }
-            else
-            {
-                qDebug() << "Enterless" << endl;
-                ui->textBrowser->setText(TEXT_COLOR_RED(content));
-            }
-        });
+    QTimer *timer = new QTimer;
+    connect(timer, &QTimer::timeout, this, [=]()mutable{
+        QString content = ui->textBrowser->document()->toPlainText();
+        qDebug() << ui->textBrowser->frameGeometry() << QCursor::pos() << endl;
+        if(ui->textBrowser->frameGeometry().contains(QCursor::pos()))
+        {
+            qDebug() << "Enter" << endl;
+            ui->textBrowser->setText(TEXT_COLOR_GREEN(content));
+        }
+        else
+        {
+            qDebug() << "Enterless" << endl;
+            ui->textBrowser->setText(TEXT_COLOR_RED(content));
+        }
+    });
 
-        timer->start(500);
+    timer->start(500);
+}
+
+
+void Widget::on_label_linkHovered(const QString &link)
+{
+    movie->stop();
+    movie->start();
+}
+
+bool Widget::eventFilter(QObject *wcg, QEvent *event)
+{
+
+
+    if (wcg == ui->lineEdit)
+    {
+        if(event->type() == QEvent::HoverEnter)
+        {
+            ui->label_2->setText(QString("进入"));
+            ui->label_2->setStyleSheet("QLabel{color:red;}");
+            qDebug() << "进入" << endl;
+        }
+        else if(event->type() == QEvent::HoverLeave)
+        {
+            ui->label_2->setText(QString("离开"));
+            ui->label_2->setStyleSheet("QLabel{color:green;}");
+            qDebug() << "离开" << endl;
+        }
+    }
+
+    return QWidget::eventFilter(wcg,event);
 }
 
