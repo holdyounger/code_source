@@ -15,8 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientTest.cpp">
+    <ClCompile Include="PipeClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="PipeIPC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PipeIPC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

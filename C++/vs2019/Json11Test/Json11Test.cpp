@@ -274,6 +274,39 @@ static void parse_from_stdin() {
 int main(int argc, char** argv) {
 
 
+	std::string strMsg =
+		R"({
+			  "user" :"test",
+			  "status":"login",  //登录状态：login、logout
+			  "result":"1",      //登录和登出结果，1表示成功，0表示失败
+			  "reason":"",		 //原因，比如超时退出，准入策略限制导致登录失败等
+			  "token":"xxx"      //token内容
+			})";
+
+    std::string strMsg_empty = "";
+    Json::object jstest = Json::object{ };
+    Json json1;
+
+    
+	string err;
+	const auto json = Json::parse(strMsg, err, JsonParse::COMMENTS);
+
+    jstest["msgtype"] = "test";
+    jstest["data"] = (json);
+    json1 = Json(jstest);
+    
+    std::cout << "打印：" << json1.dump();
+    return 0;
+
+	const Json obj = Json::object({
+		{ "msgtype", "TEST" },
+		{ "data", json },
+		});
+
+    std::cout << obj.dump() << std::endl;
+
+    return 0;
+
 	json11_test();
     return 0;
 

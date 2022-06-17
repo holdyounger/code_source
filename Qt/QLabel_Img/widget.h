@@ -15,6 +15,7 @@
 #include <QCursor>
 #include <QTextBrowser>
 #include <QMovie>
+#include <QStyle>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }

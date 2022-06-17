@@ -169,26 +169,3 @@ void Widget::on_label_linkHovered(const QString &link)
     movie->start();
 }
 
-bool Widget::eventFilter(QObject *wcg, QEvent *event)
-{
-
-
-    if (wcg == ui->lineEdit)
-    {
-        if(event->type() == QEvent::HoverEnter)
-        {
-            ui->label_2->setText(QString("进入"));
-            ui->label_2->setStyleSheet("QLabel{color:red;}");
-            qDebug() << "进入" << endl;
-        }
-        else if(event->type() == QEvent::HoverLeave)
-        {
-            ui->label_2->setText(QString("离开"));
-            ui->label_2->setStyleSheet("QLabel{color:green;}");
-            qDebug() << "离开" << endl;
-        }
-    }
-
-    return QWidget::eventFilter(wcg,event);
-}
-
