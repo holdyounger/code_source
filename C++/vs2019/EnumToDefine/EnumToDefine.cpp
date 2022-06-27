@@ -15,11 +15,34 @@ enum ENUM_SQLKEY {
 	QSQLITE_ENABLE_SHARED_CACHE
 };
 
+bool bis()
+{
+	return true;
+	return false;
+}
+
 int main()
 {
     std::cout << "Hello World!\n";
 
 	std::cout << Getname(QSQLITE_ENABLE_SHARED_CACHE) << endl;
+	bool bRet;
+	if ( bRet = !bis())
+	{
+		printf("-----");
+	}
+
+	int i = 0;
+	cout << bRet << endl;
+	while (i++ < 4)
+	{
+		if (i<=2)
+		{
+			printf("1111\n");
+			continue;
+		}
+		break;
+	}
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
