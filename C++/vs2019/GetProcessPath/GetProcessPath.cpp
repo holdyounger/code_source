@@ -68,12 +68,12 @@ BOOL GetProcessFullPath(DWORD dwPID, TCHAR pszFullPath[MAX_PATH], __out std::str
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID);
 	if (!hProcess)
 	{
-		cout << "Query Process With PID Failed, GetLastError()=" << GetLastError() << " PID:" << dwPID;
+		cout << "Query Process With PID Failed, GetLastError()=" << GetLastError() << " PID:" << dwPID << endl;
 		str = "";
 	}
 	else
 	{
-		cout << "OpenProcess Process With PID SUCCESS, PID:" << dwPID;
+		cout << "OpenProcess Process With PID SUCCESS, PID:" << dwPID << endl;
 	}
 
 	char filePath[MAX_PATH];
@@ -86,6 +86,7 @@ BOOL GetProcessFullPath(DWORD dwPID, TCHAR pszFullPath[MAX_PATH], __out std::str
 		hProcess = NULL;
 	}
 
+	cout << "---------" << file << endl;
 	str = ret == 0 ? "" : file;
 	return true;
 }
