@@ -14,6 +14,9 @@ TCHAR pszSubPath[MAX_VALUE_NAME] = _T("SOFTWARE\\Wow6432Node\\Microsoft\\Windows
 
 #define REGPATH _T("SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Microsoft EdgeWebView")
 
+#define REG_APP_PATH		 _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\TrustAgent.exe")
+#define REG_UNINST_KEY		 _T("Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\TrustAgent")
+
 //获取同步信息，即从注册表寻找对应的键值
 BOOL GetSynchroInfo(const TCHAR* pszSub)
 {
@@ -69,18 +72,17 @@ std::string GetSynchroInfo()
 	DWORD dwSize = sizeof(DWORD);
 	DWORD dwIndex = 0;
 	DWORD dwType = REG_SZ;
-	LONG lRet = RegOpenKeyEx(HKEY_LOCAL_MACHINE, pszSubPath, 0, KEY_READ, &hKey);
-
-
+	LONG lRet = RegOpenKeyEx(HKEY_LOCAL_MACHINE, REG_APP_PATH, 0, KEY_READ, &hKey);
 
 	if (ERROR_SUCCESS != lRet)
 	{
 		//assert(0);
+		printf("Cant Find\n");
 		return FALSE;
 	}
 
-	lRet = RegQueryValueEx(hKey, TEXT("InstallLocation"), 0, &dwType, NULL, &dwSize);
-	lRet = RegQueryValueEx(hKey, TEXT("InstallLocation"), NULL, &dwType, (LPBYTE)&szLocation, &dwSize);
+	lRet = RegQueryValueEx(hKey, TEXT(""), 0, &dwType, NULL, &dwSize);
+	lRet = RegQueryValueEx(hKey, TEXT(""), NULL, &dwType, (LPBYTE)&szLocation, &dwSize);
 	wprintf(L"RegQueryValueEx returns %d, dwSize=%d\n", lRet, dwSize);
 	//找不到
 	if (ERROR_SUCCESS != lRet)
@@ -238,7 +240,7 @@ void main(int argc, char* argv[])
 {
 	
 	std::string strRet;
-	GetSynchroInfo(REGPATH);
+	GetSynchroInfo();
 	// printf("查询结果：%s\n", strRet.c_str());
 	return;
 }

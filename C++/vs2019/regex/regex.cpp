@@ -7,6 +7,34 @@
 #include <fstream>
 using namespace std;
 
+unsigned char FromHex(unsigned char x) {
+	unsigned char y;
+	if (x >= 'A' && x <= 'Z') y = x - 'A' + 10;
+	else if (x >= 'a' && x <= 'z') y = x - 'a' + 10;
+	else if (x >= '0' && x <= '9') y = x - '0';
+	else return 0;
+	return y;
+}
+
+string UrlDecode(const string& str) {
+	string dst = "";
+	size_t length = str.length();
+	for (size_t i = 0; i < length; i++) {
+		if (str[i] == '+') {
+			dst += ' ';
+		}
+		else if (i + 2 < length && str[i] == '%') {
+			unsigned char high = FromHex((unsigned char)str[++i]);
+			unsigned char low = FromHex((unsigned char)str[++i]);
+			dst += high * 16 + low;
+		}
+		else {
+			dst += str[i];
+		}
+	}
+	return dst;
+}
+
 std::string readFile(string filePath)
 {
 	ifstream fin;
@@ -67,12 +95,14 @@ std::string serviceDesensitize1(std::string strJson)
 	std::string strV2 = regex_replace(strV1, pattern_name, "\"name\": \"*******\"");
 	return regex_replace(strV2, pattern_sub_name, "\"sub_name\": \"*******\"");
 }
-int main() {
+
+void ReadFileToRegex()
+{
 	string cnt = readFile("regexTest.txt");
 	cout << "[正则]：\n" << serviceDesensitize1(cnt);
 
 
-	return 0;
+	return ;
 	std::string fnames[] = { "foo.txt", "bar.txt", "test", "a0.txt", "AAA.txt" };
 	// 在 C++ 中 \ 会被作为字符串内的转义符，为使 \. 作为正则表达式传递进去生效，需要对 \ 进行二次转义，从而有 \\.
 	std::regex txt_regex("[a-z]+\\.txt");
@@ -87,7 +117,77 @@ int main() {
 	//	chat to string
 	char num[] = "123456";
 	string strnum(num);
-	cout << strnum << endl;
+}
+
+
+// 匹配URL编解码
+bool isEncodeUrl(string url)
+{
+	cout << "Url Origin:" << url << endl;
+	smatch result;
+	string reg("[^a-zA-Z0-9\\\.%\\\+-!@#&\\\*\\\(\\\)_\\\+-=\\\?]*");
+	string reg1("%{1}[a-zA-Z0-9]{1,3}");
+	cout << "reg" << reg << endl;
+	std::regex pattern(reg1);
+	std::regex_match(url, result, pattern);
+
+	//迭代器声明
+	string::const_iterator iterStart = url.begin();
+	string::const_iterator iterEnd = url.end();
+	string temp;
+	while (std::regex_search(iterStart, iterEnd, result, pattern))
+	{
+		temp = result[0];
+		string decode = UrlDecode(temp);
+		cout << temp << " " << decode;
+		url.replace(url.find_first_of(temp), temp.length(), decode);
+		iterStart = result[0].second;	//更新搜索起始位置,搜索剩下的字符串
+
+		cout << endl << "Url:" << url << endl;
+	}
+
+	cout << endl << "Url:" << url << endl;
+
+	return true;
+}
+
+string isEncodeUrl_1(string url)
+{
+	std::string reg("%{1}[a-zA-Z0-9]{1,3}");
+	std::regex pattern(reg);
+	std::smatch result;
+
+	//迭代器声明
+	std::string::const_iterator iterStart = url.begin();
+	std::string::const_iterator iterEnd = url.end();
+	std::string temp;
+#if 0
+	while (std::regex_search(iterStart, iterEnd, result, pattern))
+	{
+		temp = result[0];
+		std::string decode = UrlDecode(temp);
+		url.replace(url.find_first_of(temp), temp.length(), decode);
+		iterStart = result[0].second;	//更新搜索起始位置,搜索剩下的字符串
+		iterStart = url.begin();
+	}
+#endif
+
+	while (std::regex_search(iterStart, iterEnd, result, pattern))
+	{
+		cout << result[0] << endl;
+		url = std::regex_replace(url, pattern, UrlDecode(result[0]), std::regex_constants::format_first_only);
+		iterStart = url.begin();
+		iterEnd = url.end();
+	}
+
+	return url;
+}
+
+#define URL "https://10.92.4.117:8443/tac/download/client/com.qianxin.trustagent.win.standard.exe.bm-3.1.1.4585/TrustAgent_standard_3.1.1.4585.aef031d09%5B10.92.4.117%40443%5D.exe"
+#define URL1 "!@#$%25%5E&*()_+-=?%5C/"
+int main() {
+	
+	cout << isEncodeUrl_1(string(URL)) << endl;
 }
 
 
