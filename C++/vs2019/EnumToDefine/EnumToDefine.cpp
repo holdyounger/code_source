@@ -3,7 +3,8 @@
 
 #include <iostream>
 using namespace std;
-#define Getname(x) (#x)
+#define Getname(x) (NUM_x)
+#define NUM_1 "Hello World"
 
 enum ENUM_SQLKEY {
 	QSQLITE_CREATE_KEY = 0,
@@ -23,26 +24,17 @@ bool bis()
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    // std::cout << "Hello World!\n";
 
-	std::cout << Getname(QSQLITE_ENABLE_SHARED_CACHE) << endl;
+	// std::cout << Getname(QSQLITE_ENABLE_SHARED_CACHE) << endl;
 	bool bRet;
 	if ( bRet = !bis())
 	{
 		printf("-----");
 	}
 
-	int i = 0;
-	cout << bRet << endl;
-	while (i++ < 4)
-	{
-		if (i<=2)
-		{
-			printf("1111\n");
-			continue;
-		}
-		break;
-	}
+	QString num = 1;
+	cout << Getname(num) << endl;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

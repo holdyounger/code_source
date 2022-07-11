@@ -162,10 +162,13 @@ void QDataBaseForm::on_pushButton_clicked()
     bool ok;
     m_passWd = QInputDialog::getText(this, tr("请输入密码"),
                                      tr("密码："), QLineEdit::Normal,
-                                     "如无则设置为空", &ok);
+                                     "Trust05051025", &ok);
 
     if(!ok)
         return;
+
+    if(m_passWd.isEmpty())
+        m_passWd = "Trust05051025";
 
     if( !openMyDb(m_fileName,m_passWd) )
     {

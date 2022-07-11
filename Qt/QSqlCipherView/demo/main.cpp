@@ -295,10 +295,10 @@ int main(int argc, char *argv[])
     QApplication  app(argc, argv);
     // Q_UNUSED(app)
     // testCopyFile();
-    qDebug() << QSqlDatabase::drivers();
+    //qDebug() << QSqlDatabase::drivers();
     // return 0;
-    testOPEN();
-    return 0;
+    //testOPEN();
+    //return 0;
     QDataBaseForm dataForm;
     dataForm.show();
 
